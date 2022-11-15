@@ -11,6 +11,9 @@ int WinMain() {
     // Set uv index to 6.0 and disable the uv lights.
     application.states.SetUVIndex(6.0f, application.states.Disabled);
 
+  application.states.SetPH(6.0f, application.states.Disabled);
+  application.states.SetPH(12.0f, application.states.Disabled);
+
     // Retreives the most recent co2 reading.
     float co2 = application.states.GetCO2()[0];
   })

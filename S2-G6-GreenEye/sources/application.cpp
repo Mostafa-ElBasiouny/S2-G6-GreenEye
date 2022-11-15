@@ -312,6 +312,8 @@ void Application::Base::PH()
 		ImGui::SliderFloat("Minimum", &this->states->ph_range.first, 0.0f, 7.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->ph_range.second, 7.0f, 14.0f, "%.1f");
 
+		ImGui::BulletText("Current Value: %.1f", this->states->GetPH().first.back());
+
 		ImGui::BulletText("PH Regulator %s", this->states->GetPH().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
 
@@ -372,6 +374,8 @@ void Application::Base::CO2()
 		ImGui::SliderFloat("Minimum", &this->states->co2_range.first, 500.0f, 1000.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->co2_range.second, 1000.0f, 1500.0f, "%.1f");
 
+		ImGui::BulletText("Current Value: %.1f PPM", this->states->GetCO2().back());
+
 		ImGui::EndChild();
 	}
 
@@ -405,6 +409,8 @@ void Application::Base::UVIndex()
 		ImGui::BulletText("Average Index Range");
 		ImGui::SliderFloat("Minimum", &this->states->uv_index_range.first, 0.0f, 6.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->uv_index_range.second, 6.0f, 12.0f, "%.1f");
+
+		ImGui::BulletText("Current Value: %.1f", this->states->GetUVIndex().first.back());
 
 		ImGui::BulletText("UV Light %s", this->states->GetUVIndex().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
@@ -466,6 +472,8 @@ void Application::Base::Temperature()
 		ImGui::SliderFloat("Minimum", &this->states->temperature_range.first, 20.0f, 25.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->temperature_range.second, 25.0f, 30.0f, "%.1f");
 
+		ImGui::BulletText(u8"Current Value: %.1f °C", this->states->GetTemperature().first.back());
+
 		ImGui::BulletText("AC %s", this->states->GetTemperature().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
 
@@ -525,6 +533,8 @@ void Application::Base::AirHumidity()
 		ImGui::BulletText("Average Percentage Range");
 		ImGui::SliderFloat("Minimum", &this->states->air_humidity_range.first, 60.0f, 80.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->air_humidity_range.second, 80.0f, 100.0f, "%.1f");
+
+		ImGui::BulletText("Current Value: %.1f %%", this->states->GetAirHumidity().first.back());
 
 		ImGui::BulletText("Humidifier %s", this->states->GetAirHumidity().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
@@ -586,6 +596,8 @@ void Application::Base::Precipitation()
 		ImGui::SliderFloat("Minimum", &this->states->precipitation_range.first, 2500.0f, 5000.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->precipitation_range.second, 5000.0f, 7500.0f, "%.1f");
 
+		ImGui::BulletText("Current Value: %.1f MM", this->states->GetPrecipitation().back());
+
 		ImGui::EndChild();
 	}
 
@@ -628,6 +640,8 @@ void Application::Base::SoilMoisture()
 		ImGui::BulletText("Average Percentage Range");
 		ImGui::SliderFloat("Minimum", &this->states->soil_moisture_range.first, 80.0f, 90.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->soil_moisture_range.second, 90.0f, 100.0f, "%.1f");
+
+		ImGui::BulletText("Current Value: %.1f %%", this->states->GetSoilMoisture().first.back());
 
 		ImGui::BulletText("Water Sprinkler %s", this->states->GetSoilMoisture().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
@@ -688,6 +702,8 @@ void Application::Base::SoilFertility()
 		ImGui::BulletText("Average Percentage Range");
 		ImGui::SliderFloat("Minimum", &this->states->soil_fertility_range.first, 80.0f, 90.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->soil_fertility_range.second, 90.0f, 100.0f, "%.1f");
+
+		ImGui::BulletText("Current Value: %.1f %%", this->states->GetSoilFertility().back());
 
 		ImGui::EndChild();
 	}
