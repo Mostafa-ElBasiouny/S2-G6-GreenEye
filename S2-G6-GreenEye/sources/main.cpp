@@ -1,8 +1,14 @@
 #include <iostream>
+using namespace std;
 
-int main(void)
+int main()
 {
-	std::cout << "Hello, World!" << std::endl;
+	openFile("info.txt");
+
+
+
+
+	closefile("info.txt");
 
 	return 0;
 }
