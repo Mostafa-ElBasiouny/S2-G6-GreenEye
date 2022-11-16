@@ -1,6 +1,5 @@
 #pragma once
 #include "PhSensor.h"
-#include "Event.h"
 
 class PhRegulator {
 private:
@@ -11,7 +10,7 @@ private:
 public:
 	void turnOnOff(bool switcher);
 
-	Event raiseAlert();
+	void raiseAlert();
 
 	void setPresetPh(float pH);
 
