@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AirHumidifier.cpp" />
     <ClCompile Include="AirHumiditySensor.cpp" />
     <ClCompile Include="sources\main.cpp" />
   </ItemGroup>
