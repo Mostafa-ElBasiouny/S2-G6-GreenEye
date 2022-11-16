@@ -128,6 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="UvIndexSensor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UvIndexSensor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
