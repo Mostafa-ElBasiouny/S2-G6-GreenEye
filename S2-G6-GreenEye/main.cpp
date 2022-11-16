@@ -4,7 +4,8 @@
 int main(void)
 {
 	co2 mainSensor;
-	float co2_max, co2_min;
+	float co2_max = 100;
+	float co2_min = 0;
 
 	mainSensor.setvalueCO(generateRandomValue());
 	mainSensor.setMaxMin(co2_max, co2_min);
