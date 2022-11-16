@@ -12,7 +12,7 @@ int main(void)
 
 	float co2value = mainSensor.getvalueCO();
 
-	int event = checkValid(co2value);
+	int event = checkValid(mainSensor);
 
 	if (event == 0)
 	{

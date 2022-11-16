@@ -33,4 +33,4 @@ public:
 };
 
 float generateRandomValue(void);
-int checkValid(float valueCO2);
+int checkValid(co2 mainsensor);
