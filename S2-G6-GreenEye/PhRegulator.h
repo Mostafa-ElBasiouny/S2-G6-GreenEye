@@ -4,7 +4,8 @@
 class PhRegulator {
 private:
 	PH sensor;
-	float presetPH;
+	float presetPhMin;
+	float presetPhMax;
 	bool onOff;
 
 public:
@@ -12,7 +13,9 @@ public:
 
 	void raiseAlert();
 
-	void setPresetPh(float pH);
+	void setPresetPhMin(float pH);
+	float getPresetPhMin();
 
-	float getPresetPh();
+	void setPresetPhMax(float pH);
+	float getPresetPhMax();
 };
