@@ -26,5 +26,8 @@
     <ClInclude Include="AirHumiditySensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AirHumidifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
