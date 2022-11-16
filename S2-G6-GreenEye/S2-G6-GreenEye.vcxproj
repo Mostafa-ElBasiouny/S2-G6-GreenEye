@@ -127,11 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="soilfertility.cpp" />
     <ClCompile Include="sources\main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="soilfertility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
