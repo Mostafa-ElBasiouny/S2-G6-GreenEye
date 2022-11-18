@@ -21,15 +21,9 @@
     <ClCompile Include="AirHumiditySensor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AirHumidifier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AirHumiditySensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AirHumidifier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
