@@ -1,36 +1,62 @@
 #pragma once
-class co2
-{
-private:
 
-	float valueCO;
-	float valueCOMax;
-	float valueCOMin;
+#include <iostream>
 
-public:
+#define DATABASE_STUBS
 
-	void setMaxMin(float COMax, float COMin)
-	{
-		valueCOMax = COMax;
-		valueCOMin = COMin;
-	}
-	float getvalueCO(void)
-	{
-		return valueCOMax;
-	}
-	void setvalueCO(float value)
-	{
-		valueCO = value;
-	}
-	float getMax(void)
-	{
-		return valueCO;
-	}
-	float getMin(void)
-	{
-		return valueCOMin;
-	}
+/* Database helper methods. */
+#ifdef DATABASE_STUBS
+#include <vector>
+
+enum Status { Disabled, Enabled };
+
+enum Levels { Notice, Warning, Critical };
+
+enum Sensors {
+    None,
+
+    Ph,
+    Co2,
+    Uvindex,
+    Temperature,
+    Airhumidity,
+    Precipitation,
+    Soilmoisture,
+    Soilfertility
 };
 
-float generateRandomValue(void);
-int checkValid(co2 mainsensor);
+struct Event {
+    std::string timestamp;
+    Levels level;
+    Sensors sensor;
+    std::string message;
+};
+
+void Set(Sensors sensor, float value) {}
+void Set(Sensors sensor, Status status) {}
+void Set(Sensors sensor, float minimum_value, float maximum_value) {}
+void Set(Levels level, Sensors sensor, std::string message, std::string timestamp_string = "\0") {}
+
+void Get(Sensors sensor, std::vector<float>& out_values) {}
+void Get(Sensors sensor, Status& out_status) {}
+void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value) {}
+void Get(std::vector<Event>& out_events) {}
+#endif
+
+class co2
+{
+protected:
+    Sensors m_sensor = Co2;
+
+    float m_value;
+    std::pair<float, float> m_ranges;
+
+public:
+    co2(uint32_t read_interval);
+
+    void GetRanges();
+    void SetValue(float value);
+    void SetRanges(float min, float max);
+    void CreateEvent(Levels level, std::string message);
+    void Evaluate();
+};
