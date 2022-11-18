@@ -127,11 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sources\soilhumidity.cpp" />
-    <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="sources\soilmoisture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sources\soilhumidity.h" />
+    <ClInclude Include="sources\soilmoisture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
