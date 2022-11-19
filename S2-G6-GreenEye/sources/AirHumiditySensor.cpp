@@ -69,11 +69,11 @@ void AirHumidifier::Evaluate()
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "Air Humidity levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Air Humidity reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,11 +81,11 @@ void AirHumidifier::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "Air Humidity levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Air Humidity reaching low levels!");
     }
 }
 
