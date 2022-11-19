@@ -69,11 +69,11 @@ void AC::Evaluate()
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "Temperature levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Temperature reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,11 +81,11 @@ void AC::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "Temperature levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Temperature reaching low levels!");
     }
 }
 
