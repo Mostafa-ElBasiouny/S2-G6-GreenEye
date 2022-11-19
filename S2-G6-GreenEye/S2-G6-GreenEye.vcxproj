@@ -129,6 +129,10 @@
   <ItemGroup>
     <ClCompile Include="AirHumiditySensor.cpp" />
     <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="Temperature.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Temperature.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AirHumiditySensor.h" />
