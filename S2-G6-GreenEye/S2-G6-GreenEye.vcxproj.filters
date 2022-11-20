@@ -10,6 +10,17 @@
     <ClCompile Include="sources\soil_moisture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sources\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Ph.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="sources\temperature.h" />
     <ClInclude Include="sources\precipitation.h" />
     <ClInclude Include="sources\co2.h" />
