@@ -11,7 +11,12 @@
     <ClCompile Include="sources\ph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sources\main.cpp">
+    <ClInclude Include="sources\database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="sources\database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
