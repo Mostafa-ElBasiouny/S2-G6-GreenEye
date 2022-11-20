@@ -127,9 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="sources\AirHumiditySensor.cpp" />
+    <ClCompile Include="sources\main.cpp" />
+    <ClCompile Include="sources\Temperature.cpp" />
+    <ClCompile Include="sources\soilmoisture.cpp" />
     <ClCompile Include="source\precipitation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sources\Temperature.h" />
+    <ClInclude Include="sources\AirHumiditySensor.h" />
+    <ClInclude Include="sources\soilmoisture.h" />
     <ClInclude Include="source\precipitation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
