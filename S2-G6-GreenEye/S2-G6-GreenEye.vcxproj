@@ -132,8 +132,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ph.h" />
-    <ClInclude Include="PhRegulator.h" />
-    <ClInclude Include="PhSensor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
