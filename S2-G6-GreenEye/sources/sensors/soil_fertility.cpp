@@ -1,13 +1,13 @@
-#include "co2.h"
+#include "soil_fertility.h"
 
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-CO2Sensor::CO2Sensor(uint32_t time_interval) : m_value(0)
+SoilFertilitySensor::SoilFertilitySensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "CO2.data";
+    std::string file_name = "resources/sensors/SoilFertility.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void CO2Sensor::GetRanges()
+void SoilFertilitySensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void CO2Sensor::GetRanges()
     SetRanges(min, max);
 }
 
-void CO2Sensor::SetValue(float value)
+void SoilFertilitySensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,36 +57,36 @@ void CO2Sensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void CO2Sensor::SetRanges(float min, float max)
+void SoilFertilitySensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void CO2Sensor::Evaluate()
+void SoilFertilitySensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
-            CreateEvent(Critical, "CO2 levels too high!");
+            CreateEvent(Critical, "DONT ADD FERTILIZER: Soil Fertility too high!");
             return;
         }
 
-        CreateEvent(Warning, "CO2 reaching high levels!");
+        CreateEvent(Warning, "Soil Fertility reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
     {
         if (m_value <= m_ranges.first)
         {
-            CreateEvent(Critical, "CO2 levels too low!");
+            CreateEvent(Critical, "ADD FERTILIZER: Soil Fertility too low!");
             return;
         }
 
-        CreateEvent(Warning, "CO2 reaching low levels!");
+        CreateEvent(Warning, "Soil Fertility reaching low levels!");
     }
 }
-void CO2Sensor::CreateEvent(Levels level, std::string message)
+void SoilFertilitySensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

@@ -1,13 +1,12 @@
-#include "Temperature.h"
-
+#include "uv_index.h"
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-TemperatureSensor::TemperatureSensor(uint32_t time_interval) : m_value(0)
+UVIndexSensor::UVIndexSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "Temperature.data";
+    std::string file_name = "resources/sensors/UVIndex.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +32,7 @@ loop:
     goto loop;
 }
 
-void TemperatureSensor::GetRanges()
+void UVIndexSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -44,11 +43,11 @@ void TemperatureSensor::GetRanges()
 
     /* DATABASE */ Get(m_sensor, min, max);
 
-    /*Update the sensor's ranges. */
+    /* Update the sensor's ranges. */
     SetRanges(min, max);
 }
 
-void TemperatureSensor::SetValue(float value)
+void UVIndexSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,23 +56,23 @@ void TemperatureSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void TemperatureSensor::SetRanges(float min, float max)
+void UVIndexSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void AC::Evaluate()
+void UVLight::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "Temperature levels too high!");
+            CreateEvent(Critical, "TURNING OFF UV LIGHTS: UV too high!");
             return;
         }
 
-        CreateEvent(Warning, "Temperature reaching high levels!");
+        CreateEvent(Warning, "Reaching high levels of UV!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,22 +80,22 @@ void AC::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "Temperature levels too low!");
+            CreateEvent(Critical, "TURNING ON UV LIGHTS: UV too low!");
             return;
         }
 
-        CreateEvent(Warning, "Temperature reaching low levels!");
+        CreateEvent(Warning, "Reaching low levels of UV!");
     }
 }
 
-void AC::Switcher()
+void UVLight::Switcher()
 {
     /* DATABASE */ Get(m_sensor, m_status);
 
     m_status ? Enabled : Disabled;
 }
 
-void AC::CreateEvent(Levels level, std::string message)
+void UVLight::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

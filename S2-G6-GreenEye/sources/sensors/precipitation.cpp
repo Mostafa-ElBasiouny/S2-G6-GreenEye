@@ -1,13 +1,13 @@
-#include "soil_fertility.h"
+#include "precipitation.h"
 
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-SoilFertilitySensor::SoilFertilitySensor(uint32_t time_interval) : m_value(0)
+PrecipitationSensor::PrecipitationSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "SoilFertility.data";
+    std::string file_name = "resources/sensors/Precipitation.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void SoilFertilitySensor::GetRanges()
+void PrecipitationSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void SoilFertilitySensor::GetRanges()
     SetRanges(min, max);
 }
 
-void SoilFertilitySensor::SetValue(float value)
+void PrecipitationSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,36 +57,36 @@ void SoilFertilitySensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void SoilFertilitySensor::SetRanges(float min, float max)
+void PrecipitationSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void SoilFertilitySensor::Evaluate()
+void PrecipitationSensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
-            CreateEvent(Critical, "DONT ADD FERTILIZER: Soil Fertility too high!");
+            CreateEvent(Critical, "Precipitation levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "Soil Fertility reaching high levels!");
+        CreateEvent(Warning, "Precipitation reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
     {
         if (m_value <= m_ranges.first)
         {
-            CreateEvent(Critical, "ADD FERTILIZER: Soil Fertility too low!");
+            CreateEvent(Critical, "Precipitation levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "Soil Fertility reaching low levels!");
+        CreateEvent(Warning, "Precipitation reaching low levels!");
     }
 }
-void SoilFertilitySensor::CreateEvent(Levels level, std::string message)
+void PrecipitationSensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

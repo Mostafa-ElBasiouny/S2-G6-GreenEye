@@ -1,12 +1,13 @@
-#include "uv_index.h"
+#include "co2.h"
+
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-UVIndexSensor::UVIndexSensor(uint32_t time_interval) : m_value(0)
+CO2Sensor::CO2Sensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "UVIndex.data";
+    std::string file_name = "resources/sensors/CO2.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -32,7 +33,7 @@ loop:
     goto loop;
 }
 
-void UVIndexSensor::GetRanges()
+void CO2Sensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -47,7 +48,7 @@ void UVIndexSensor::GetRanges()
     SetRanges(min, max);
 }
 
-void UVIndexSensor::SetValue(float value)
+void CO2Sensor::SetValue(float value)
 {
     m_value = value;
 
@@ -56,46 +57,36 @@ void UVIndexSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void UVIndexSensor::SetRanges(float min, float max)
+void CO2Sensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void UVLight::Evaluate()
+void CO2Sensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
-            Switcher();
-            CreateEvent(Critical, "TURNING OFF UV LIGHTS: UV too high!");
+            CreateEvent(Critical, "CO2 levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "Reaching high levels of UV!");
+        CreateEvent(Warning, "CO2 reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
     {
         if (m_value <= m_ranges.first)
         {
-            Switcher();
-            CreateEvent(Critical, "TURNING ON UV LIGHTS: UV too low!");
+            CreateEvent(Critical, "CO2 levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "Reaching low levels of UV!");
+        CreateEvent(Warning, "CO2 reaching low levels!");
     }
 }
-
-void UVLight::Switcher()
-{
-    /* DATABASE */ Get(m_sensor, m_status);
-
-    m_status ? Enabled : Disabled;
-}
-
-void UVLight::CreateEvent(Levels level, std::string message)
+void CO2Sensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

@@ -1,44 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="sources\temperature.cpp" />
-    <ClCompile Include="sources\precipitation.cpp" />
-    <ClCompile Include="sources\co2.cpp" />
-    <ClCompile Include="sources\air_humidity.cpp" />
-    <ClCompile Include="sources\soil_fertility.cpp" />
-    <ClCompile Include="sources\soil_moisture.cpp" />
-    <ClCompile Include="sources\uv_index.cpp" />
-    <ClCompile Include="sources\ph.cpp" />
+    <ClCompile Include="sources\sensors\temperature.cpp" />
+    <ClCompile Include="sources\sensors\precipitation.cpp" />
+    <ClCompile Include="sources\sensors\co2.cpp" />
+    <ClCompile Include="sources\sensors\air_humidity.cpp" />
+    <ClCompile Include="sources\sensors\soil_fertility.cpp" />
+    <ClCompile Include="sources\sensors\soil_moisture.cpp" />
+    <ClCompile Include="sources\sensors\uv_index.cpp" />
+    <ClCompile Include="sources\sensors\ph.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sources\database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="sources\database.cpp" />
+    <ClInclude Include="sources\database.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sources\database.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="sources\sensors\temperature.h" />
+    <ClInclude Include="sources\sensors\precipitation.h" />
+    <ClInclude Include="sources\sensors\co2.h" />
+    <ClInclude Include="sources\sensors\air_humidity.h" />
+    <ClInclude Include="sources\sensors\soil_fertility.h" />
+    <ClInclude Include="sources\sensors\soil_moisture.h" />
+    <ClInclude Include="sources\sensors\uv_index.h" />
+    <ClInclude Include="sources\sensors\ph.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sources\temperature.h" />
-    <ClInclude Include="sources\precipitation.h" />
-    <ClInclude Include="sources\co2.h" />
-    <ClInclude Include="sources\air_humidity.h" />
-    <ClInclude Include="sources\soil_fertility.h" />
-    <ClInclude Include="sources\soil_moisture.h" />
-    <ClInclude Include="sources\uv_index.h" />
-    <ClInclude Include="sources\ph.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\AirHumidity.data" />
-    <None Include="resources\CO2.data" />
-    <None Include="resources\PH.data" />
-    <None Include="resources\Precipitation.data" />
-    <None Include="resources\SoilFertility.data" />
-    <None Include="resources\SoilMoisture.data" />
-    <None Include="resources\Temperature.data" />
-    <None Include="resources\UVIndex.data" />
+    <None Include="resources\sensors\AirHumidity.data" />
+    <None Include="resources\sensors\CO2.data" />
+    <None Include="resources\sensors\PH.data" />
+    <None Include="resources\sensors\Precipitation.data" />
+    <None Include="resources\sensors\SoilFertility.data" />
+    <None Include="resources\sensors\SoilMoisture.data" />
+    <None Include="resources\sensors\Temperature.data" />
+    <None Include="resources\sensors\UVIndex.data" />
     <None Include="resources\GreenEye.data" />
   </ItemGroup>
 </Project>

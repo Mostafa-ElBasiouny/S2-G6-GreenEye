@@ -1,13 +1,12 @@
-#include "air_humidity.h"
-
+#include "ph.h"
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-AirHumiditySensor::AirHumiditySensor(uint32_t time_interval) : m_value(0)
+PhSensor::PhSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "AirHumidity.data";
+    std::string file_name = "resources/sensors/PH.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +32,7 @@ loop:
     goto loop;
 }
 
-void AirHumiditySensor::GetRanges()
+void PhSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +47,7 @@ void AirHumiditySensor::GetRanges()
     SetRanges(min, max);
 }
 
-void AirHumiditySensor::SetValue(float value)
+void PhSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,23 +56,23 @@ void AirHumiditySensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void AirHumiditySensor::SetRanges(float min, float max)
+void PhSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void AirHumidifier::Evaluate()
+void PhRegulator::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "Air Humidity levels too high!");
+            CreateEvent(Critical, "TURNING OFF PH REGULATOR: PH too high!");
             return;
         }
 
-        CreateEvent(Warning, "Air Humidity reaching high levels!");
+        CreateEvent(Warning, "Reaching high levels of PH!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,22 +80,22 @@ void AirHumidifier::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "Air Humidity levels too low!");
+            CreateEvent(Critical, "TURNING ON PH REGULATOR: PH too low!");
             return;
         }
 
-        CreateEvent(Warning, "Air Humidity reaching low levels!");
+        CreateEvent(Warning, "Reaching low levels of PH!");
     }
 }
 
-void AirHumidifier::Switcher()
+void PhRegulator::Switcher()
 {
     /* DATABASE */ Get(m_sensor, m_status);
 
     m_status ? Enabled : Disabled;
 }
 
-void AirHumidifier::CreateEvent(Levels level, std::string message)
+void PhRegulator::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

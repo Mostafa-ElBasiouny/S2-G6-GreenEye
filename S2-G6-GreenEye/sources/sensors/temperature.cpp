@@ -1,13 +1,13 @@
-#include "precipitation.h"
+#include "Temperature.h"
 
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-PrecipitationSensor::PrecipitationSensor(uint32_t time_interval) : m_value(0)
+TemperatureSensor::TemperatureSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "Precipitation.data";
+    std::string file_name = "resources/sensors/Temperature.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void PrecipitationSensor::GetRanges()
+void TemperatureSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -44,11 +44,11 @@ void PrecipitationSensor::GetRanges()
 
     /* DATABASE */ Get(m_sensor, min, max);
 
-    /* Update the sensor's ranges. */
+    /*Update the sensor's ranges. */
     SetRanges(min, max);
 }
 
-void PrecipitationSensor::SetValue(float value)
+void TemperatureSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,36 +57,46 @@ void PrecipitationSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void PrecipitationSensor::SetRanges(float min, float max)
+void TemperatureSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void PrecipitationSensor::Evaluate()
+void AC::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
-            CreateEvent(Critical, "Precipitation levels too high!");
+            Switcher();
+            CreateEvent(Critical, "Temperature levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "Precipitation reaching high levels!");
+        CreateEvent(Warning, "Temperature reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
     {
         if (m_value <= m_ranges.first)
         {
-            CreateEvent(Critical, "Precipitation levels too low!");
+            Switcher();
+            CreateEvent(Critical, "Temperature levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "Precipitation reaching low levels!");
+        CreateEvent(Warning, "Temperature reaching low levels!");
     }
 }
-void PrecipitationSensor::CreateEvent(Levels level, std::string message)
+
+void AC::Switcher()
+{
+    /* DATABASE */ Get(m_sensor, m_status);
+
+    m_status ? Enabled : Disabled;
+}
+
+void AC::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

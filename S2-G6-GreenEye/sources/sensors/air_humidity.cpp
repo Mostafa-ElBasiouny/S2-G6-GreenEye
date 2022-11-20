@@ -1,13 +1,13 @@
-#include "soil_moisture.h"
+#include "air_humidity.h"
 
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-SoilMoistureSensor::SoilMoistureSensor(uint32_t time_interval) : m_value(0)
+AirHumiditySensor::AirHumiditySensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "SoilMoisture.data";
+    std::string file_name = "resources/sensors/AirHumidity.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void SoilMoistureSensor::GetRanges()
+void AirHumiditySensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void SoilMoistureSensor::GetRanges()
     SetRanges(min, max);
 }
 
-void SoilMoistureSensor::SetValue(float value)
+void AirHumiditySensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,23 +57,23 @@ void SoilMoistureSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void SoilMoistureSensor::SetRanges(float min, float max)
+void AirHumiditySensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void WaterSprinkler::Evaluate()
+void AirHumidifier::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "TURNING OFF WATER SPRINKLER: Soil Moisture too high!");
+            CreateEvent(Critical, "Air Humidity levels too high!");
             return;
         }
 
-        CreateEvent(Warning, "Reaching high levels of Soil Moisture!");
+        CreateEvent(Warning, "Air Humidity reaching high levels!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,22 +81,22 @@ void WaterSprinkler::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "TURNING ON WATER SPRINKLER: Soil Moisture too low!");
+            CreateEvent(Critical, "Air Humidity levels too low!");
             return;
         }
 
-        CreateEvent(Warning, "Reaching low levels of Soil Moisture!");
+        CreateEvent(Warning, "Air Humidity reaching low levels!");
     }
 }
 
-void WaterSprinkler::Switcher()
+void AirHumidifier::Switcher()
 {
     /* DATABASE */ Get(m_sensor, m_status);
 
     m_status ? Enabled : Disabled;
 }
 
-void WaterSprinkler::CreateEvent(Levels level, std::string message)
+void AirHumidifier::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }
