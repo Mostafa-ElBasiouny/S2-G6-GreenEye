@@ -6,7 +6,7 @@
 PhSensor::PhSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "ph.data";
+    std::string file_name = "PH.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);

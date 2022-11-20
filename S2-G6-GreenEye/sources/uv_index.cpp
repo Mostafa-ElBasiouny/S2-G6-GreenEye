@@ -3,10 +3,10 @@
 #include <sstream>
 #include <fstream>
 
-UVSensor::UVSensor(uint32_t time_interval) : m_value(0)
+UVIndexSensor::UVIndexSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "uv.data";
+    std::string file_name = "UVIndex.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -32,7 +32,7 @@ loop:
     goto loop;
 }
 
-void UVSensor::GetRanges()
+void UVIndexSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -47,7 +47,7 @@ void UVSensor::GetRanges()
     SetRanges(min, max);
 }
 
-void UVSensor::SetValue(float value)
+void UVIndexSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -56,7 +56,7 @@ void UVSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void UVSensor::SetRanges(float min, float max)
+void UVIndexSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }

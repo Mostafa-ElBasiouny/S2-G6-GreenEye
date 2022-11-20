@@ -7,7 +7,7 @@
 PrecipitationSensor::PrecipitationSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "precipitation.data";
+    std::string file_name = "Precipitation.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
