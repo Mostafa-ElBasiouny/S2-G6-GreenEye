@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sources\main.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="co2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Temperature.cpp">
@@ -26,6 +29,11 @@
   <ItemGroup>
     <ClInclude Include="Temperature.h">
     <ClInclude Include="AirHumiditySensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="co2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
