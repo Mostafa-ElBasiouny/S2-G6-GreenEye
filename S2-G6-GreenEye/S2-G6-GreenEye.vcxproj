@@ -127,10 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="precipitation.cpp" />
+    <ClCompile Include="source\precipitation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="precipitation.h" />
+    <ClInclude Include="source\precipitation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
