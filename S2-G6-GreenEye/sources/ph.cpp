@@ -1,13 +1,12 @@
-#include "UV.h"
+#include "ph.h"
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-
-UvSensor::UvSensor(uint32_t time_interval) : m_value(0)
+PhSensor::PhSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "uv.data";
+    std::string file_name = "ph.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +32,7 @@ loop:
     goto loop;
 }
 
-void UvSensor::GetRanges()
+void PhSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +47,7 @@ void UvSensor::GetRanges()
     SetRanges(min, max);
 }
 
-void UvSensor::SetValue(float value)
+void PhSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,23 +56,23 @@ void UvSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void UvSensor::SetRanges(float min, float max)
+void PhSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void UvLight::Evaluate()
+void PhRegulator::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "TURNING OFF PH REGULATOR: PH too high!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Reaching high levels of PH!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,22 +80,22 @@ void UvLight::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "TURNING ON PH REGULATOR: PH too low!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Reaching low levels of PH!");
     }
 }
 
-void UvLight::Switcher()
+void PhRegulator::Switcher()
 {
     /* DATABASE */ Get(m_sensor, m_status);
 
     m_status ? Enabled : Disabled;
 }
 
-void UvLight::CreateEvent(Levels level, std::string message)
+void PhRegulator::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

@@ -1,13 +1,12 @@
-#include "Ph.h"
+#include "uv_index.h"
 #include <ctime>
 #include <sstream>
 #include <fstream>
 
-
-PhSensor::PhSensor(uint32_t time_interval) : m_value(0)
+UVSensor::UVSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
-    std::string file_name = "ph.data";
+    std::string file_name = "uv.data";
     std::ifstream file_stream;
 
     file_stream.open(file_name);
@@ -33,7 +32,7 @@ loop:
     goto loop;
 }
 
-void PhSensor::GetRanges()
+void UVSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +47,7 @@ void PhSensor::GetRanges()
     SetRanges(min, max);
 }
 
-void PhSensor::SetValue(float value)
+void UVSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,23 +56,23 @@ void PhSensor::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void PhSensor::SetRanges(float min, float max)
+void UVSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void PhRegulator::Evaluate()
+void UVLight::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
         if (m_value >= m_ranges.second)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "TURNING OFF UV LIGHTS: UV too high!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Reaching high levels of UV!");
     }
 
     if (m_value <= (15 / 100 * m_ranges.first))
@@ -81,22 +80,22 @@ void PhRegulator::Evaluate()
         if (m_value <= m_ranges.first)
         {
             Switcher();
-            CreateEvent(Critical, "");
+            CreateEvent(Critical, "TURNING ON UV LIGHTS: UV too low!");
             return;
         }
 
-        CreateEvent(Warning, "");
+        CreateEvent(Warning, "Reaching low levels of UV!");
     }
 }
 
-void PhRegulator::Switcher()
+void UVLight::Switcher()
 {
     /* DATABASE */ Get(m_sensor, m_status);
 
     m_status ? Enabled : Disabled;
 }
 
-void PhRegulator::CreateEvent(Levels level, std::string message)
+void UVLight::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

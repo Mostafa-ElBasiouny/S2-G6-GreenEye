@@ -132,10 +132,10 @@
     <ClCompile Include="sources\soil_moisture.cpp" />
     <ClCompile Include="sources\temperature.cpp" />
     <ClCompile Include="sources\precipitation.cpp" />
-    <ClCompile Include="sources\co2.cpp" />    
-    <ClCompile Include="UV.cpp" />
+    <ClCompile Include="sources\co2.cpp" />
+    <ClCompile Include="sources\uv_index.cpp" />
     <ClCompile Include="sources\main.cpp" />
-        <ClCompile Include="Ph.cpp" />
+    <ClCompile Include="sources\ph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sources\air_humidity.h" />
@@ -144,8 +144,8 @@
     <ClInclude Include="sources\temperature.h" />
     <ClInclude Include="sources\precipitation.h" />
     <ClInclude Include="sources\co2.h" />
-    <ClInclude Include="UV.h" />
-    <ClInclude Include="Ph.h" />
+    <ClInclude Include="sources\uv_index.h" />
+    <ClInclude Include="sources\ph.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

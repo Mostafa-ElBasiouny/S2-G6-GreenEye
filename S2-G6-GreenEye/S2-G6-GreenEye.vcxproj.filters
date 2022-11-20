@@ -8,24 +8,22 @@
     <ClCompile Include="sources\air_humidity.cpp" />
     <ClCompile Include="sources\soil_fertility.cpp" />
     <ClCompile Include="sources\soil_moisture.cpp" />
+    <ClCompile Include="sources\uv_index.cpp" />
+    <ClCompile Include="sources\ph.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ph.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="sources\temperature.h" />
     <ClInclude Include="sources\precipitation.h" />
     <ClInclude Include="sources\co2.h" />
     <ClInclude Include="sources\air_humidity.h" />
     <ClInclude Include="sources\soil_fertility.h" />
     <ClInclude Include="sources\soil_moisture.h" />
+    <ClInclude Include="sources\uv_index.h" />
+    <ClInclude Include="sources\ph.h" />
   </ItemGroup>
 </Project>
