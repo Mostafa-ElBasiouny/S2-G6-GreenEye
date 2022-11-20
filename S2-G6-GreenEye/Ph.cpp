@@ -4,6 +4,35 @@
 #include <fstream>
 
 
+PhSensor::PhSensor(uint32_t time_interval) : m_value(0)
+{
+    float sensor_reading = 0.0f;
+    std::string file_name = "ph.data";
+    std::ifstream file_stream;
+
+    file_stream.open(file_name);
+
+    if (!file_stream.is_open()) std::exit(-1);
+
+loop:
+    while (!file_stream.eof())
+    {
+        std::string value_raw;
+        std::getline(file_stream, value_raw);
+
+        sensor_reading = std::stof(value_raw);
+
+        GetRanges();
+        SetValue(sensor_reading);
+
+        auto time_now = std::clock();
+
+        while (std::clock() - time_now < time_interval * 1000) {}
+    }
+
+    goto loop;
+}
+
 void PhSensor::GetRanges()
 {
     /*
