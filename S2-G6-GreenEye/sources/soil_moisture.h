@@ -43,7 +43,7 @@ void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value) {}
 void Get(std::vector<Event>& out_events) {}
 #endif
 
-class SoilMoisture
+class SoilMoistureSensor
 {
 protected:
     Sensors m_sensor = Soilmoisture;
@@ -52,7 +52,7 @@ protected:
     std::pair<float, float> m_ranges;
 
 public:
-    SoilMoisture(uint32_t read_interval);
+    SoilMoistureSensor(uint32_t read_interval);
 
     void GetRanges();
     void SetValue(float value);
@@ -61,7 +61,7 @@ public:
     virtual void Evaluate() = 0;
 };
 
-class WaterSprinkler : protected SoilMoisture
+class WaterSprinkler : protected SoilMoistureSensor
 {
     Status m_status;
 

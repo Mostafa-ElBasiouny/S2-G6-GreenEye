@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-SoilMoisture::SoilMoisture(uint32_t time_interval) : m_value(0)
+SoilMoistureSensor::SoilMoistureSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "SoilMoisture.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void SoilMoisture::GetRanges()
+void SoilMoistureSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void SoilMoisture::GetRanges()
     SetRanges(min, max);
 }
 
-void SoilMoisture::SetValue(float value)
+void SoilMoistureSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,7 +57,7 @@ void SoilMoisture::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void SoilMoisture::SetRanges(float min, float max)
+void SoilMoistureSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }

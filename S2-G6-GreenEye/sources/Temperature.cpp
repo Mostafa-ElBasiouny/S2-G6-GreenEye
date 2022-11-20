@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-TemperatureSens::TemperatureSens(uint32_t time_interval) : m_value(0)
+TemperatureSensor::TemperatureSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "Temperature.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void TemperatureSens::GetRanges()
+void TemperatureSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void TemperatureSens::GetRanges()
     SetRanges(min, max);
 }
 
-void TemperatureSens::SetValue(float value)
+void TemperatureSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,7 +57,7 @@ void TemperatureSens::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void TemperatureSens::SetRanges(float min, float max)
+void TemperatureSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }

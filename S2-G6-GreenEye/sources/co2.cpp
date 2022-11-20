@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-co2::co2(uint32_t time_interval) : m_value(0)
+CO2Sensor::CO2Sensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "co2.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void co2::GetRanges()
+void CO2Sensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void co2::GetRanges()
     SetRanges(min, max);
 }
 
-void co2::SetValue(float value)
+void CO2Sensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,12 +57,12 @@ void co2::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void co2::SetRanges(float min, float max)
+void CO2Sensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void co2::Evaluate()
+void CO2Sensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
@@ -86,7 +86,7 @@ void co2::Evaluate()
         CreateEvent(Warning, "CO2 reaching low levels!");
     }
 }
-void co2::CreateEvent(Levels level, std::string message)
+void CO2Sensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

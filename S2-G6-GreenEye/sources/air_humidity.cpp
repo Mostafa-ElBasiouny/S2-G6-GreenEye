@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-AirHumiditySens::AirHumiditySens(uint32_t time_interval) : m_value(0)
+AirHumiditySensor::AirHumiditySensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "AirHumidity.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void AirHumiditySens::GetRanges()
+void AirHumiditySensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void AirHumiditySens::GetRanges()
     SetRanges(min, max);
 }
 
-void AirHumiditySens::SetValue(float value)
+void AirHumiditySensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,7 +57,7 @@ void AirHumiditySens::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void AirHumiditySens::SetRanges(float min, float max)
+void AirHumiditySensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }

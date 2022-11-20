@@ -43,7 +43,7 @@ void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value) {}
 void Get(std::vector<Event>& out_events) {}
 #endif
 
-class SoilFertility
+class SoilFertilitySensor
 {
 protected:
     Sensors m_sensor = Soilfertility;
@@ -52,7 +52,7 @@ protected:
     std::pair<float, float> m_ranges;
 
 public:
-    SoilFertility(uint32_t read_interval);
+    SoilFertilitySensor(uint32_t read_interval);
 
     void GetRanges();
     void SetValue(float value);

@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-SoilFertility::SoilFertility(uint32_t time_interval) : m_value(0)
+SoilFertilitySensor::SoilFertilitySensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "SoilFertility.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void SoilFertility::GetRanges()
+void SoilFertilitySensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void SoilFertility::GetRanges()
     SetRanges(min, max);
 }
 
-void SoilFertility::SetValue(float value)
+void SoilFertilitySensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,12 +57,12 @@ void SoilFertility::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void SoilFertility::SetRanges(float min, float max)
+void SoilFertilitySensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void SoilFertility::Evaluate()
+void SoilFertilitySensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
@@ -86,7 +86,7 @@ void SoilFertility::Evaluate()
         CreateEvent(Warning, "Soil Fertility reaching low levels!");
     }
 }
-void SoilFertility::CreateEvent(Levels level, std::string message)
+void SoilFertilitySensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

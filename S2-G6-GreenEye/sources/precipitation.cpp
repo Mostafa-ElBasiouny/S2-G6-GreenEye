@@ -4,7 +4,7 @@
 #include <sstream>
 #include <fstream>
 
-precipitation::precipitation(uint32_t time_interval) : m_value(0)
+PrecipitationSensor::PrecipitationSensor(uint32_t time_interval) : m_value(0)
 {
     float sensor_reading = 0.0f;
     std::string file_name = "precipitation.data";
@@ -33,7 +33,7 @@ loop:
     goto loop;
 }
 
-void precipitation::GetRanges()
+void PrecipitationSensor::GetRanges()
 {
     /*
         Read ranges from the database.
@@ -48,7 +48,7 @@ void precipitation::GetRanges()
     SetRanges(min, max);
 }
 
-void precipitation::SetValue(float value)
+void PrecipitationSensor::SetValue(float value)
 {
     m_value = value;
 
@@ -57,12 +57,12 @@ void precipitation::SetValue(float value)
     /* DATABASE */ Set(m_sensor, m_value);
 }
 
-void precipitation::SetRanges(float min, float max)
+void PrecipitationSensor::SetRanges(float min, float max)
 {
     m_ranges = std::make_pair(min, max);
 }
 
-void precipitation::Evaluate()
+void PrecipitationSensor::Evaluate()
 {
     if (m_value >= (85 / 100 * m_ranges.second))
     {
@@ -86,7 +86,7 @@ void precipitation::Evaluate()
         CreateEvent(Warning, "Precipitation reaching low levels!");
     }
 }
-void precipitation::CreateEvent(Levels level, std::string message)
+void PrecipitationSensor::CreateEvent(Levels level, std::string message)
 {
     /* DATABASE */ Set(level, m_sensor, message);
 }

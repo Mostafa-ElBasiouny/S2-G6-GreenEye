@@ -43,7 +43,7 @@ void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value) {}
 void Get(std::vector<Event>& out_events) {}
 #endif
 
-class precipitation
+class PrecipitationSensor
 {
 protected:
     Sensors m_sensor = Precipitation;
@@ -52,7 +52,7 @@ protected:
     std::pair<float, float> m_ranges;
 
 public:
-    precipitation(uint32_t read_interval);
+    PrecipitationSensor(uint32_t read_interval);
 
     void GetRanges();
     void SetValue(float value);

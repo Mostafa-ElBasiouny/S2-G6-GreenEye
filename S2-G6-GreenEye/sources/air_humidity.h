@@ -43,7 +43,7 @@ void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value) {}
 void Get(std::vector<Event>& out_events) {}
 #endif
 
-class AirHumiditySens
+class AirHumiditySensor
 {
 protected:
     Sensors m_sensor = AirHumidity;
@@ -52,7 +52,7 @@ protected:
     std::pair<float, float> m_ranges;
 
 public:
-    AirHumiditySens(uint32_t read_interval);
+    AirHumiditySensor(uint32_t read_interval);
 
     void GetRanges();
     void SetValue(float value);
@@ -61,7 +61,7 @@ public:
     virtual void Evaluate() = 0;
 };
 
-class AirHumidifier : protected AirHumiditySens
+class AirHumidifier : protected AirHumiditySensor
 {
     Status m_status;
 

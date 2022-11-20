@@ -127,20 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sources\AirHumiditySensor.cpp" />
+    <ClCompile Include="sources\air_humidity.cpp" />
     <ClCompile Include="sources\main.cpp" />
-    <ClCompile Include="sources\Temperature.cpp" />
-    <ClCompile Include="sources\soilmoisture.cpp" />
+    <ClCompile Include="sources\soil_fertility.cpp" />
+    <ClCompile Include="sources\soil_moisture.cpp" />
+    <ClCompile Include="sources\temperature.cpp" />
     <ClCompile Include="sources\precipitation.cpp" />
-    <ClCompile Include="sources\soilfertility.cpp" />
     <ClCompile Include="sources\co2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sources\Temperature.h" />
-    <ClInclude Include="sources\AirHumiditySensor.h" />
-    <ClInclude Include="sources\soilmoisture.h" />
+    <ClInclude Include="sources\air_humidity.h" />
+    <ClInclude Include="sources\soil_fertility.h" />
+    <ClInclude Include="sources\soil_moisture.h" />
+    <ClInclude Include="sources\temperature.h" />
     <ClInclude Include="sources\precipitation.h" />
-    <ClInclude Include="sources\soilfertility.h" />
     <ClInclude Include="sources\co2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
