@@ -1,4 +1,4 @@
-#include "Temperature.h"
+#include "temperature.h"
 
 #include <ctime>
 #include <sstream>

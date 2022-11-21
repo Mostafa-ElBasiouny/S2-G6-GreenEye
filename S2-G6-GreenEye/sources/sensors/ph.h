@@ -1,29 +1,6 @@
 #pragma once
 #include <iostream>
 
-#define DATABASE_STUBS
-
-/* Database helper methods. */
-#ifdef DATABASE_STUBS
-#include <vector>
-
-enum Status { Disabled, Enabled };
-
-enum Levels { Notice, Warning, Critical };
-
-enum Sensors {
-	None,
-
-	PH,
-	CO2,
-	UVIndex,
-	Temperature,
-	AirHumidity,
-	Precipitation,
-	SoilMoisture,
-	SoilFertility
-};
-
 struct Event {
 	std::string timestamp;
 	Levels level;
