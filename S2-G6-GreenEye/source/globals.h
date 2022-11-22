@@ -12,9 +12,9 @@
 #include "database.h"
 #include "hmi/application.h"
 
-#define INITIALIZE(OBJECT, NAME) OBJECT* NAME = new OBJECT(g_time_interval, database)
+#define INITIALIZE(OBJECT, NAME) OBJECT* NAME = new OBJECT(g_time_interval, g_database)
 #define DELETE(NAME) delete NAME
 
 const int g_time_interval = 4; // In seconds.
 
-static Database* database = new Database("resources/GreenEye.data");
+static Database* g_database = new Database("resources/GreenEye.data");
