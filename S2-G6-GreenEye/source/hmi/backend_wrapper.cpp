@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "../../imgui/imgui_impl_glfw.h"
+#include "../../imgui/imgui_impl_opengl3.h"
 #include "inter_regular.h"
 
 static void glfwErrorCallback(int error, const char* description)
@@ -40,8 +40,9 @@ Wrapper::Wrapper(const char* title)
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	(void)io;
+	io.IniFilename = "";
 
-	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 24.0f);
+	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 16.0f);
 	ImGui::StyleColorsLight();
 
 	ImGuiStyle& style = ImGui::GetStyle();

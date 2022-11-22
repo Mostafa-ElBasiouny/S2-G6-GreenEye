@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "../ImGui/GLFW/glfw3.h"
-#include "../ImGui/imgui.h"
-#include "../ImGui/implot.h"
+#include "../../imgui/glfw/glfw3.h"
+#include "../../imgui/imgui.h"
+#include "../../imgui/implot.h"
 
 class Wrapper {
 public:
