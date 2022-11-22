@@ -34,7 +34,7 @@ void PH::Run()
 		m_internal_clock = clock();
 	}
 
-	if (m_file_stream.eof()) m_file_stream.open(m_file_name, ios::in);
+	if (m_file_stream.eof()) m_file_stream.seekg(0);
 }
 
 void PH::GetRanges()
@@ -72,6 +72,7 @@ void PH::Evaluate()
 	{
 		if (m_value >= m_ranges.second)
 		{
+			Switcher();
 			CreateEvent(Record::Critical, "PH levels too high!");
 			return;
 		}
@@ -83,6 +84,7 @@ void PH::Evaluate()
 	{
 		if (m_value <= m_ranges.first)
 		{
+			Switcher();
 			CreateEvent(Record::Critical, "PH levels too low!");
 			return;
 		}

@@ -7,6 +7,7 @@
 #pragma once
 
 #include "backend_wrapper.h"
+#include "../database.h"
 
 #include <iostream>
 #include <vector>
@@ -19,6 +20,7 @@
     APPLICATION.Close();
 
 class Application : private Wrapper {
+public:
 	struct States {
 		enum Status {
 			Disabled,
@@ -45,10 +47,10 @@ class Application : private Wrapper {
 		};
 
 		struct Event {
-			time_t timestamp;
+			std::string timestamp;
 			Levels level;
 			Sensors sensor;
-			const char* message;
+			std::string message;
 		};
 
 		int record_size = 100;
@@ -80,14 +82,14 @@ class Application : private Wrapper {
 		void SetTemperature(Status status);
 		void SetSoilMoisture(Status status);
 
-		void SetCO2(float value);
-		void SetPrecipitation(float value);
-		void SetSoilFertility(float value);
-		void SetPH(float value, Status status);
-		void SetUVIndex(float value, Status status);
-		void SetTemperature(float value, Status status);
-		void SetAirHumidity(float value, Status status);
-		void SetSoilMoisture(float value, Status status);
+		void SetCO2(std::vector<float> values);
+		void SetPrecipitation(std::vector<float> values);
+		void SetSoilFertility(std::vector<float> values);
+		void SetPH(std::vector<float> values);
+		void SetUVIndex(std::vector<float> values);
+		void SetTemperature(std::vector<float> values);
+		void SetAirHumidity(std::vector<float> values);
+		void SetSoilMoisture(std::vector<float> values);
 
 		void SetEvent(Event event);
 
@@ -101,6 +103,15 @@ class Application : private Wrapper {
 		std::pair<std::vector<float>, Status> GetSoilMoisture();
 
 		std::vector<Event> GetEvents(Sensors sensor = None);
+
+		std::pair<float, float> GetCO2Ranges();
+		std::pair<float, float> GetPrecipitationRanges();
+		std::pair<float, float> GetSoilFertilityRanges();
+		std::pair<float, float> GetPHRanges();
+		std::pair<float, float> GetUVIndexRanges();
+		std::pair<float, float> GetTemperatureRanges();
+		std::pair<float, float> GetAirHumidityRanges();
+		std::pair<float, float> GetSoilMoistureRanges();
 
 		std::pair<float, float> ph_range;
 		std::pair<float, float> co2_range;
@@ -116,6 +127,7 @@ class Application : private Wrapper {
 
 	class Base {
 		struct States* states;
+		Database* m_database;
 
 		void Home();
 		void PH();
@@ -130,7 +142,7 @@ class Application : private Wrapper {
 		inline void Events(std::vector<Application::States::Event> events);
 
 	public:
-		Base(Application& application);
+		Base(Application& application, Database* database);
 
 		void Render();
 	};
@@ -138,7 +150,7 @@ class Application : private Wrapper {
 	Base base;
 
 public:
-	Application(const char* title);
+	Application(const char* title, Database* database);
 
 	void Render();
 	States states;

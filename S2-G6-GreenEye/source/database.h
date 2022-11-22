@@ -26,7 +26,7 @@ struct Record
 
 	struct Event { Sensors sensor; Levels level; string message; string timestamp; };
 
-private:
+protected:
 	vector<float> ph;
 	vector<float> co2;
 	vector<float> uv_index;
@@ -53,6 +53,8 @@ private:
 	pair<float, float> soil_moisture_range;
 	pair<float, float> soil_fertility_range;
 
+	int record_size = 100;
+
 public:
 	void Set(Sensors sensor, float value);
 	void Set(Sensors sensor, Status status);
@@ -63,6 +65,8 @@ public:
 	void Get(Sensors sensor, Status& out_status);
 	void Get(Sensors sensor, float& out_minimum_value, float& out_maximum_value);
 	void Get(vector<Event>& out_events);
+
+	void ClearEvents();
 };
 
 class Database : public Record

@@ -34,7 +34,7 @@ void SoilMoisture::Run()
 		m_internal_clock = clock();
 	}
 
-	if (m_file_stream.eof()) m_file_stream.open(m_file_name, ios::in);
+	if (m_file_stream.eof()) m_file_stream.seekg(0);
 }
 
 void SoilMoisture::GetRanges()
@@ -72,6 +72,7 @@ void SoilMoisture::Evaluate()
 	{
 		if (m_value >= m_ranges.second)
 		{
+			Switcher();
 			CreateEvent(Record::Critical, "Soil moisture levels too high!");
 			return;
 		}
@@ -83,6 +84,7 @@ void SoilMoisture::Evaluate()
 	{
 		if (m_value <= m_ranges.first)
 		{
+			Switcher();
 			CreateEvent(Record::Critical, "Soil moisture levels too low!");
 			return;
 		}

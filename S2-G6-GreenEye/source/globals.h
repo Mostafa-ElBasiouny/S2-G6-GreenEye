@@ -15,6 +15,6 @@
 #define INITIALIZE(OBJECT, NAME) OBJECT* NAME = new OBJECT(g_time_interval, g_database)
 #define DELETE(NAME) delete NAME
 
-const int g_time_interval = 4; // In seconds.
+const int g_time_interval = 1; // In seconds.
 
 static Database* g_database = new Database("resources/GreenEye.data");

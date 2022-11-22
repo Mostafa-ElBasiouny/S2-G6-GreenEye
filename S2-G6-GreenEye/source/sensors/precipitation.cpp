@@ -34,7 +34,7 @@ void Precipitation::Run()
 		m_internal_clock = clock();
 	}
 
-	if (m_file_stream.eof()) m_file_stream.open(m_file_name, ios::in);
+	if (m_file_stream.eof()) m_file_stream.seekg(0);
 }
 
 void Precipitation::GetRanges()

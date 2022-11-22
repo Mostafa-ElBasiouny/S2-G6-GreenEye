@@ -8,12 +8,6 @@
 
 #pragma region States
 
-inline void VectorAppend(std::vector<float>* vector, float value)
-{
-	vector->push_back(value);
-	vector->erase(vector->begin());
-}
-
 Application::States::States()
 {
 	this->ph_range = std::make_pair(0.0f, 14.0f);
@@ -66,49 +60,44 @@ void Application::States::SetSoilMoisture(Status status)
 	this->water_sprinkler = status;
 }
 
-void Application::States::SetCO2(float value)
+void Application::States::SetCO2(std::vector<float> values)
 {
-	VectorAppend(&this->co2, value);
+	this->co2 = values;
 }
 
-void Application::States::SetPrecipitation(float value)
+void Application::States::SetPrecipitation(std::vector<float> values)
 {
-	VectorAppend(&this->precipitation, value);
+	this->precipitation = values;
 }
 
-void Application::States::SetSoilFertility(float value)
+void Application::States::SetSoilFertility(std::vector<float> values)
 {
-	VectorAppend(&this->soil_fertility, value);
+	this->soil_fertility = values;
 }
 
-void Application::States::SetPH(float value, Status status)
+void Application::States::SetPH(std::vector<float> values)
 {
-	VectorAppend(&this->ph, value);
-	this->ph_regulator = status;
+	this->ph = values;
 }
 
-void Application::States::SetUVIndex(float value, Status status)
+void Application::States::SetUVIndex(std::vector<float> values)
 {
-	VectorAppend(&this->uv_index, value);
-	this->uv_light = status;
+	this->uv_index = values;
 }
 
-void Application::States::SetTemperature(float value, Status status)
+void Application::States::SetTemperature(std::vector<float> values)
 {
-	VectorAppend(&this->temperature, value);
-	this->ac = status;
+	this->temperature = values;
 }
 
-void Application::States::SetAirHumidity(float value, Status status)
+void Application::States::SetAirHumidity(std::vector<float> values)
 {
-	VectorAppend(&this->air_humidity, value);
-	this->humidifier = status;
+	this->air_humidity = values;
 }
 
-void Application::States::SetSoilMoisture(float value, Status status)
+void Application::States::SetSoilMoisture(std::vector<float> values)
 {
-	VectorAppend(&this->soil_moisture, value);
-	this->water_sprinkler = status;
+	this->soil_moisture = values;
 }
 
 void Application::States::SetEvent(Event event)
@@ -175,6 +164,46 @@ std::vector<Application::States::Event> Application::States::GetEvents(Sensors s
 	else {
 		return this->events;
 	}
+}
+
+std::pair<float, float> Application::States::GetCO2Ranges()
+{
+	return this->co2_range;
+}
+
+std::pair<float, float> Application::States::GetPrecipitationRanges()
+{
+	return this->precipitation_range;
+}
+
+std::pair<float, float> Application::States::GetSoilFertilityRanges()
+{
+	return this->soil_fertility_range;
+}
+
+std::pair<float, float> Application::States::GetPHRanges()
+{
+	return this->ph_range;
+}
+
+std::pair<float, float> Application::States::GetUVIndexRanges()
+{
+	return this->uv_index_range;
+}
+
+std::pair<float, float> Application::States::GetTemperatureRanges()
+{
+	return this->temperature_range;
+}
+
+std::pair<float, float> Application::States::GetAirHumidityRanges()
+{
+	return this->air_humidity_range;
+}
+
+std::pair<float, float> Application::States::GetSoilMoistureRanges()
+{
+	return this->soil_moisture_range;
 }
 
 #pragma endregion
@@ -328,7 +357,10 @@ void Application::Base::PH()
 
 		if (ImGui::SmallButton(action)) {
 			this->states->SetPH(action == "Enable" ? this->states->Enabled : this->states->Disabled);
-			this->states->SetEvent({ time(0), this->states->Warning, this->states->PH, action == "Enable" ? "PH Regulator: Enabled by user." : "PH Regulator: Disabled by user." });
+			time_t _ = time(0);
+			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->PH, action == "Enable" ? "PH Regulator: Enabled by user." : "PH Regulator: Disabled by user." });
+			auto status = static_cast<Record::Status>(this->states->GetPH().second);
+			this->m_database->Set(Record::PH, status);
 		}
 
 		ImGui::EndChild();
@@ -426,7 +458,10 @@ void Application::Base::UVIndex()
 
 		if (ImGui::SmallButton(action)) {
 			this->states->SetUVIndex(action == "Enable" ? this->states->Enabled : this->states->Disabled);
-			this->states->SetEvent({ time(0), this->states->Warning, this->states->UVIndex, action == "Enable" ? "UV Light: Enabled by user." : "UV Light: Disabled by user." });
+			time_t _ = time(0);
+			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->UVIndex, action == "Enable" ? "UV Light: Enabled by user." : "UV Light: Disabled by user." });
+			auto status = static_cast<Record::Status>(this->states->GetUVIndex().second);
+			this->m_database->Set(Record::UVIndex, status);
 		}
 
 		ImGui::EndChild();
@@ -488,7 +523,10 @@ void Application::Base::Temperature()
 
 		if (ImGui::SmallButton(action)) {
 			this->states->SetTemperature(action == "Enable" ? this->states->Enabled : this->states->Disabled);
-			this->states->SetEvent({ time(0), this->states->Warning, this->states->Temperature, action == "Enable" ? "AC: Enabled by user." : "AC: Disabled by user." });
+			time_t _ = time(0);
+			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->Temperature, action == "Enable" ? "AC: Enabled by user." : "AC: Disabled by user." });
+			auto status = static_cast<Record::Status>(this->states->GetTemperature().second);
+			this->m_database->Set(Record::Temperature, status);
 		}
 
 		ImGui::EndChild();
@@ -550,7 +588,10 @@ void Application::Base::AirHumidity()
 
 		if (ImGui::SmallButton(action)) {
 			this->states->SetAirHumidity(action == "Enable" ? this->states->Enabled : this->states->Disabled);
-			this->states->SetEvent({ time(0), this->states->Warning, this->states->AirHumidity, action == "Enable" ? "Humidifier: Enabled by user." : "Humidifier: Disabled by user." });
+			time_t _ = time(0);
+			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->AirHumidity, action == "Enable" ? "Humidifier: Enabled by user." : "Humidifier: Disabled by user." });
+			auto status = static_cast<Record::Status>(this->states->GetAirHumidity().second);
+			this->m_database->Set(Record::AirHumidity, status);
 		}
 
 		ImGui::EndChild();
@@ -657,7 +698,10 @@ void Application::Base::SoilMoisture()
 
 		if (ImGui::SmallButton(action)) {
 			this->states->SetSoilMoisture(action == "Enable" ? this->states->Enabled : this->states->Disabled);
-			this->states->SetEvent({ time(0), this->states->Warning, this->states->SoilMoisture, action == "Enable" ? "Water Sprinkler: Enabled by user." : "Water Sprinkler: Disabled by user." });
+			time_t _ = time(0);
+			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->SoilMoisture, action == "Enable" ? "Water Sprinkler: Enabled by user." : "Water Sprinkler: Disabled by user." });
+			auto status = static_cast<Record::Status>(this->states->GetSoilMoisture().second);
+			this->m_database->Set(Record::SoilMoisture, status);
 		}
 
 		ImGui::EndChild();
@@ -743,7 +787,7 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 
 			ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 
-			ImGui::Text(" %s", ctime(&events[i].timestamp));
+			ImGui::TextUnformatted(events[i].timestamp.data());
 
 			ImGui::TableSetColumnIndex(1);
 			const char* sensor = "";
@@ -776,19 +820,65 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 				sensor = "Soil Fertility";
 				break;
 			}
-			ImGui::Text(" %s", sensor);
+			ImGui::TextUnformatted(sensor);
 
 			ImGui::TableSetColumnIndex(2);
-			ImGui::Text(" %s", events[i].message);
+			ImGui::TextUnformatted(events[i].message.data());
 		}
 
 		ImGui::EndTable();
 	}
 }
 
-Application::Base::Base(Application& application)
+inline void Popup(vector<Application::States::Event> alerts)
+{
+	if (ImGui::BeginPopupModal("Alert", &alert_visible, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		for (auto& alert : alerts) {
+			const char* sensor = "";
+			switch (alert.sensor) {
+			case 0:
+				sensor = "Global";
+				break;
+			case 1:
+				sensor = "PH";
+				break;
+			case 2:
+				sensor = u8"CO²";
+				break;
+			case 3:
+				sensor = "UV Index";
+				break;
+			case 4:
+				sensor = "Temperature";
+				break;
+			case 5:
+				sensor = "Air Humidity";
+				break;
+			case 6:
+				sensor = "Precipitation";
+				break;
+			case 7:
+				sensor = "Soil Moisture";
+				break;
+			case 8:
+				sensor = "Soil Fertility";
+				break;
+			}
+
+			ImGui::TextUnformatted(sensor);
+			ImGui::TextUnformatted(alert.message.data());
+			ImGui::NewLine();
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+Application::Base::Base(Application& application, Database* database)
 {
 	this->states = &application.states;
+	this->m_database = database;
 }
 
 void Application::Base::Render()
@@ -852,58 +942,20 @@ void Application::Base::Render()
 	ImGui::End();
 
 	if (this->states->alerts.size() > 0)
+	{
 		alert_visible = true;
-
-	for (auto& alert : this->states->alerts) {
-		const char* sensor = "";
-		switch (alert.sensor) {
-		case 0:
-			sensor = "Global";
-			break;
-		case 1:
-			sensor = "PH";
-			break;
-		case 2:
-			sensor = u8"CO²";
-			break;
-		case 3:
-			sensor = "UV Index";
-			break;
-		case 4:
-			sensor = "Temperature";
-			break;
-		case 5:
-			sensor = "Air Humidity";
-			break;
-		case 6:
-			sensor = "Precipitation";
-			break;
-		case 7:
-			sensor = "Soil Moisture";
-			break;
-		case 8:
-			sensor = "Soil Fertility";
-			break;
-		}
-
-		ImGui::BeginPopupModal("Alert", &alert_visible, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize);
-
-		ImGui::Text("%s: %s", sensor, alert.message);
-		ImGui::NewLine();
-
 		ImGui::OpenPopup("Alert");
-		ImGui::EndPopup();
+		Popup(this->states->alerts);
 
-		if (!alert_visible)
-			this->states->alerts.clear();
+		if (!alert_visible) this->states->alerts.clear();
 	}
 }
 
 #pragma endregion
 
-Application::Application(const char* title)
+Application::Application(const char* title, Database* database)
 	: Wrapper(title)
-	, base(*this)
+	, base(*this, database)
 {
 }
 

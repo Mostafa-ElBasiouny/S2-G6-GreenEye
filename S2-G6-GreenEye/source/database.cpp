@@ -8,18 +8,24 @@
 
 #include "database.h"
 
+inline void VectorAppend(std::vector<float>* vector, float value)
+{
+	vector->push_back(value);
+	vector->erase(vector->begin());
+}
+
 void Record::Set(Sensors sensor, float value)
 {
 	switch (sensor)
 	{
-	case PH: ph.push_back(value); break;
-	case CO2: co2.push_back(value); break;
-	case UVIndex: uv_index.push_back(value); break;
-	case Temperature: temperature.push_back(value); break;
-	case AirHumidity: air_humidity.push_back(value); break;
-	case Precipitation: precipitation.push_back(value); break;
-	case SoilMoisture: soil_moisture.push_back(value); break;
-	case SoilFertility: soil_fertility.push_back(value); break;
+	case PH: VectorAppend(&ph, value); break;
+	case CO2: VectorAppend(&co2, value); break;
+	case UVIndex: VectorAppend(&uv_index, value); break;
+	case Temperature: VectorAppend(&temperature, value); break;
+	case AirHumidity: VectorAppend(&air_humidity, value); break;
+	case Precipitation: VectorAppend(&precipitation, value); break;
+	case SoilMoisture: VectorAppend(&soil_moisture, value); break;
+	case SoilFertility: VectorAppend(&soil_fertility, value); break;
 	}
 }
 
@@ -107,6 +113,11 @@ void Record::Get(Sensors sensor, float& out_minimum_value, float& out_maximum_va
 void Record::Get(vector<Event>& out_events)
 {
 	out_events = events;
+}
+
+void Record::ClearEvents()
+{
+	this->events.clear();
 }
 
 inline int ToEnum(string value_raw)
@@ -409,6 +420,15 @@ void Database::Write(Sensors sensor)
 
 Database::Database(string file_name)
 {
+	std::fill_n(std::back_inserter(this->ph), this->record_size, (this->ph_range.first + this->ph_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->co2), this->record_size, (this->co2_range.first + this->co2_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->uv_index), this->record_size, (this->uv_index_range.first + this->uv_index_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->temperature), this->record_size, (this->temperature_range.first + this->temperature_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->air_humidity), this->record_size, (this->air_humidity_range.first + this->air_humidity_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->precipitation), this->record_size, (this->precipitation_range.first + this->precipitation_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->soil_moisture), this->record_size, (this->soil_moisture_range.first + this->soil_moisture_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->soil_fertility), this->record_size, (this->soil_fertility_range.first + this->soil_fertility_range.second) / 2.0f);
+
 	m_file_name = file_name;
 	m_file_stream.open(m_file_name, ios::in);
 
