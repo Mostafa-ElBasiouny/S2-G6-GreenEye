@@ -70,7 +70,7 @@ void AirHumidity::Evaluate()
 {
 	if (m_value >= (85 / 100 * m_ranges.second))
 	{
-		if (m_value >= m_ranges.second)
+		if (m_value > m_ranges.second)
 		{
 			Switcher();
 			CreateEvent(Record::Critical, "Air humidity levels too high!");
@@ -80,9 +80,9 @@ void AirHumidity::Evaluate()
 		CreateEvent(Record::Warning, "Air humidity reaching high levels!");
 	}
 
-	if (m_value <= (15 / 100 * m_ranges.first))
+	if (m_value <= (115 / 100 * m_ranges.first))
 	{
-		if (m_value <= m_ranges.first)
+		if (m_value < m_ranges.first)
 		{
 			Switcher();
 			CreateEvent(Record::Critical, "Air humidity levels too low!");

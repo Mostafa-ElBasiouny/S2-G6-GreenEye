@@ -70,7 +70,7 @@ void PH::Evaluate()
 {
 	if (m_value >= (85 / 100 * m_ranges.second))
 	{
-		if (m_value >= m_ranges.second)
+		if (m_value > m_ranges.second)
 		{
 			Switcher();
 			CreateEvent(Record::Critical, "PH levels too high!");
@@ -80,9 +80,9 @@ void PH::Evaluate()
 		CreateEvent(Record::Warning, "PH reaching high levels!");
 	}
 
-	if (m_value <= (15 / 100 * m_ranges.first))
+	if (m_value <= (115 / 100 * m_ranges.first))
 	{
-		if (m_value <= m_ranges.first)
+		if (m_value < m_ranges.first)
 		{
 			Switcher();
 			CreateEvent(Record::Critical, "PH levels too low!");
