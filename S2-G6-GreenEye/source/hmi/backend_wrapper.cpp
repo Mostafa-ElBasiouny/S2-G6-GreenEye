@@ -42,7 +42,7 @@ Wrapper::Wrapper(const char* title)
 	(void)io;
 	io.IniFilename = "";
 
-	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 24.0f);
+	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 16.0f);
 	ImGui::StyleColorsLight();
 
 	ImGuiStyle& style = ImGui::GetStyle();

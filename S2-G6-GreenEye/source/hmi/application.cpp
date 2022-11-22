@@ -358,7 +358,7 @@ void Application::Base::PH()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetPH(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->PH, action == "Enable" ? "PH Regulator: Enabled by user." : "PH Regulator: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->PH, action == "Enable" ? "PH Regulator: Enabled by user." : "PH Regulator: Disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetPH().second);
 			this->m_database->Set(Record::PH, status);
 		}
@@ -459,7 +459,7 @@ void Application::Base::UVIndex()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetUVIndex(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->UVIndex, action == "Enable" ? "UV Light: Enabled by user." : "UV Light: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->UVIndex, action == "Enable" ? "UV Light: Enabled by user." : "UV Light: Disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetUVIndex().second);
 			this->m_database->Set(Record::UVIndex, status);
 		}
@@ -524,7 +524,7 @@ void Application::Base::Temperature()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetTemperature(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->Temperature, action == "Enable" ? "AC: Enabled by user." : "AC: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->Temperature, action == "Enable" ? "AC: Enabled by user." : "AC: Disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetTemperature().second);
 			this->m_database->Set(Record::Temperature, status);
 		}
@@ -589,7 +589,7 @@ void Application::Base::AirHumidity()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetAirHumidity(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->AirHumidity, action == "Enable" ? "Humidifier: Enabled by user." : "Humidifier: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->AirHumidity, action == "Enable" ? "Humidifier: Enabled by user." : "Humidifier: Disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetAirHumidity().second);
 			this->m_database->Set(Record::AirHumidity, status);
 		}
@@ -699,7 +699,7 @@ void Application::Base::SoilMoisture()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetSoilMoisture(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Warning, this->states->SoilMoisture, action == "Enable" ? "Water Sprinkler: Enabled by user." : "Water Sprinkler: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->SoilMoisture, action == "Enable" ? "Water Sprinkler: Enabled by user." : "Water Sprinkler: Disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetSoilMoisture().second);
 			this->m_database->Set(Record::SoilMoisture, status);
 		}

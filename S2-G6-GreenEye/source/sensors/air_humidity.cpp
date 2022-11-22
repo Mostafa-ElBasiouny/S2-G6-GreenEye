@@ -97,7 +97,9 @@ void Humidifier::Switcher()
 {
 	m_database->Get(m_sensor, m_status);
 
-	m_status ? Record::Enabled : Record::Disabled;
+	m_status = (m_status == Record::Disabled ? Record::Enabled : Record::Disabled);
+
+	m_database->Set(m_sensor, m_status);
 }
 
 void Humidifier::CreateEvent(Record::Levels level, std::string message)
