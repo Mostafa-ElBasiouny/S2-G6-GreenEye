@@ -36,5 +36,5 @@ void WinMain()
 	DELETE(precipitation);
 	DELETE(soil_fertility);
 
-	DELETE(database);
+	DELETE(g_database);
 }
