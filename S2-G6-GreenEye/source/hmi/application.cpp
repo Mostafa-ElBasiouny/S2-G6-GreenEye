@@ -766,9 +766,9 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 	ImU32 cell_bg_color = ImGui::GetColorU32(ImVec4({}));
 
 	if (ImGui::BeginTable("Events", 3, ImGuiTableFlags_RowBg)) {
-		ImGui::TableSetupColumn(" Timestamp", ImGuiTableColumnFlags_WidthFixed, 364.0f);
-		ImGui::TableSetupColumn(" Sensor", ImGuiTableColumnFlags_WidthFixed, 364.0f);
-		ImGui::TableSetupColumn(" Message");
+		ImGui::TableSetupColumn("      Timestamp", ImGuiTableColumnFlags_WidthFixed, 364.0f);
+		ImGui::TableSetupColumn("      Sensor", ImGuiTableColumnFlags_WidthFixed, 364.0f);
+		ImGui::TableSetupColumn("      Message");
 		ImGui::TableHeadersRow();
 
 		for (int i = (int)events.size() - 1; i >= 0; i--) {
@@ -787,6 +787,10 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 
 			ImGui::TableSetBgColor(ImGuiTableBgTarget_CellBg, cell_bg_color);
 
+			ImGui::Text(" ");
+			ImGui::SameLine();
+			int count = events[i].timestamp.length();
+			events[i].timestamp[--count] = '\0';
 			ImGui::TextUnformatted(events[i].timestamp.data());
 
 			ImGui::TableSetColumnIndex(1);
@@ -820,9 +824,13 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 				sensor = "Soil Fertility";
 				break;
 			}
+			ImGui::Text(" ");
+			ImGui::SameLine();
 			ImGui::TextUnformatted(sensor);
 
 			ImGui::TableSetColumnIndex(2);
+			ImGui::Text(" ");
+			ImGui::SameLine();
 			ImGui::TextUnformatted(events[i].message.data());
 		}
 

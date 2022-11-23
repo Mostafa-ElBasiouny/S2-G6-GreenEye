@@ -77,21 +77,21 @@ void CO2::Evaluate()
 	{
 		if (m_value > m_ranges.second)
 		{
-			CreateEvent(Record::Critical, "CO2 levels too high!");
+			CreateEvent(Record::Critical, u8"CO² levels too high!");
 			return;
 		}
 
-		CreateEvent(Record::Warning, "CO2 reaching high levels!");
+		CreateEvent(Record::Warning, u8"CO² reaching high levels!");
 	}
 
 	if (m_value <= (115 / 100 * m_ranges.first))
 	{
 		if (m_value < m_ranges.first)
 		{
-			CreateEvent(Record::Critical, "CO2 levels too low!");
+			CreateEvent(Record::Critical, u8"CO² levels too low!");
 			return;
 		}
 
-		CreateEvent(Record::Warning, "CO2 reaching low levels!");
+		CreateEvent(Record::Warning, u8"CO² reaching low levels!");
 	}
 }
