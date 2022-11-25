@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * application.cpp
  *
  * Mostafa Elbasiouny - Nov 04, 2022
@@ -210,7 +210,8 @@ std::pair<float, float> Application::States::GetSoilMoistureRanges()
 
 #pragma region Base
 
-bool alert_visible = true;
+bool alert_visible = false;
+Application::States::Event current_alert;
 
 inline std::vector<float> RangedPlot(std::vector<float> vector, float average)
 {
@@ -296,7 +297,7 @@ void Application::Base::Home()
 			ImPlot::SetupAxes("Sample", "Change Over Time");
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
 			ImPlot::PlotBars("PH", RangedPlot(this->states->GetPH().first, (this->states->ph_range.first + this->states->ph_range.second) / 2.0f).data(), this->states->record_size);
-			ImPlot::PlotBars(u8"CO²", RangedPlot(this->states->GetCO2(), (this->states->co2_range.first + this->states->co2_range.second) / 2.0f).data(), this->states->record_size);
+			ImPlot::PlotBars(u8"COÂ²", RangedPlot(this->states->GetCO2(), (this->states->co2_range.first + this->states->co2_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("UV Index", RangedPlot(this->states->GetUVIndex().first, (this->states->uv_index_range.first + this->states->uv_index_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Temperature", RangedPlot(this->states->GetTemperature().first, (this->states->temperature_range.first + this->states->temperature_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Air Humidity", RangedPlot(this->states->GetAirHumidity().first, (this->states->air_humidity_range.first + this->states->air_humidity_range.second) / 2.0f).data(), this->states->record_size);
@@ -377,7 +378,7 @@ void Application::Base::PH()
 
 void Application::Base::CO2()
 {
-	ImGui::Text(u8"CO² Panel");
+	ImGui::Text(u8"COÂ² Panel");
 
 	float width = ImGui::GetWindowWidth() - 32.0f;
 	float height = ImGui::GetWindowHeight() - 152.0f;
@@ -391,7 +392,7 @@ void Application::Base::CO2()
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
 			ImPlot::SetupAxes("Sample", "Parts Per Million (PPM)");
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
-			ImPlot::PlotScatter(u8"CO²", this->states->GetCO2().data(), this->states->record_size);
+			ImPlot::PlotScatter(u8"COÂ²", this->states->GetCO2().data(), this->states->record_size);
 			ImPlot::PopStyleVar();
 			ImPlot::EndPlot();
 		}
@@ -490,7 +491,7 @@ void Application::Base::Temperature()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", u8"Celsius (°C)");
+			ImPlot::SetupAxes("Sample", u8"Celsius (Â°C)");
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Temperature", this->states->GetTemperature().first.data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -507,7 +508,7 @@ void Application::Base::Temperature()
 		ImGui::SliderFloat("Minimum", &this->states->temperature_range.first, 20.0f, 25.0f, "%.1f");
 		ImGui::SliderFloat("Maximum", &this->states->temperature_range.second, 25.0f, 30.0f, "%.1f");
 
-		ImGui::BulletText(u8"Current Value: %.1f °C", this->states->GetTemperature().first.back());
+		ImGui::BulletText(u8"Current Value: %.1f Â°C", this->states->GetTemperature().first.back());
 
 		ImGui::BulletText("AC %s", this->states->GetTemperature().second ? "Enabled" : "Disabled");
 		ImGui::SameLine();
@@ -803,7 +804,7 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 				sensor = "PH";
 				break;
 			case 2:
-				sensor = u8"CO²";
+				sensor = u8"COÂ²";
 				break;
 			case 3:
 				sensor = "UV Index";
@@ -838,46 +839,44 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 	}
 }
 
-inline void Popup(vector<Application::States::Event> alerts)
+inline void Popup()
 {
 	if (ImGui::BeginPopupModal("Alert", &alert_visible, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		for (auto& alert : alerts) {
-			const char* sensor = "";
-			switch (alert.sensor) {
-			case 0:
-				sensor = "Global";
-				break;
-			case 1:
-				sensor = "PH";
-				break;
-			case 2:
-				sensor = u8"CO²";
-				break;
-			case 3:
-				sensor = "UV Index";
-				break;
-			case 4:
-				sensor = "Temperature";
-				break;
-			case 5:
-				sensor = "Air Humidity";
-				break;
-			case 6:
-				sensor = "Precipitation";
-				break;
-			case 7:
-				sensor = "Soil Moisture";
-				break;
-			case 8:
-				sensor = "Soil Fertility";
-				break;
-			}
 
-			ImGui::TextUnformatted(sensor);
-			ImGui::TextUnformatted(alert.message.data());
-			ImGui::NewLine();
+		const char* sensor = "";
+		switch (current_alert.sensor) {
+		case 0:
+			sensor = "Global";
+			break;
+		case 1:
+			sensor = "PH";
+			break;
+		case 2:
+			sensor = u8"COÂ²";
+			break;
+		case 3:
+			sensor = "UV Index";
+			break;
+		case 4:
+			sensor = "Temperature";
+			break;
+		case 5:
+			sensor = "Air Humidity";
+			break;
+		case 6:
+			sensor = "Precipitation";
+			break;
+		case 7:
+			sensor = "Soil Moisture";
+			break;
+		case 8:
+			sensor = "Soil Fertility";
+			break;
 		}
+
+		ImGui::TextUnformatted(current_alert.message.data());
+		ImGui::NewLine();
 
 		ImGui::EndPopup();
 	}
@@ -909,7 +908,7 @@ void Application::Base::Render()
 			ImGui::EndTabItem();
 		}
 
-		if (ImGui::BeginTabItem(u8"CO²")) {
+		if (ImGui::BeginTabItem(u8"COÂ²")) {
 			this->CO2();
 			ImGui::EndTabItem();
 		}
@@ -949,14 +948,15 @@ void Application::Base::Render()
 
 	ImGui::End();
 
-	if (this->states->alerts.size() > 0)
+	if (!this->states->alerts.empty() && !alert_visible)
 	{
 		alert_visible = true;
+		current_alert = this->states->alerts.back();
+		this->states->alerts.pop_back();
 		ImGui::OpenPopup("Alert");
-		Popup(this->states->alerts);
-
-		if (!alert_visible) this->states->alerts.clear();
 	}
+
+	Popup();
 }
 
 #pragma endregion
