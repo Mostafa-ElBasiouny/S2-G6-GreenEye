@@ -73,7 +73,7 @@ void CO2::CreateEvent(Record::Levels level, string message)
 
 void CO2::Evaluate()
 {
-	if (m_value >= (85 / 100 * m_ranges.second))
+	if (m_value >= ((15 / 100 * (m_ranges.second - m_ranges.first)) - m_ranges.second))
 	{
 		if (m_value > m_ranges.second)
 		{
@@ -84,7 +84,7 @@ void CO2::Evaluate()
 		CreateEvent(Record::Warning, "CO2 reaching high levels!");
 	}
 
-	if (m_value <= (115 / 100 * m_ranges.first))
+	if (m_value <= ((15 / 100 * (m_ranges.second - m_ranges.first)) + m_ranges.first))
 	{
 		if (m_value < m_ranges.first)
 		{

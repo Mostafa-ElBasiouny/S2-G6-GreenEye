@@ -73,7 +73,7 @@ void Precipitation::CreateEvent(Record::Levels level, string message)
 
 void Precipitation::Evaluate()
 {
-	if (m_value >= (85 / 100 * m_ranges.second))
+	if (m_value >= ((15 / 100 * (m_ranges.second - m_ranges.first)) - m_ranges.second))
 	{
 		if (m_value > m_ranges.second)
 		{
@@ -84,7 +84,7 @@ void Precipitation::Evaluate()
 		CreateEvent(Record::Warning, "Precipitation reaching high levels!");
 	}
 
-	if (m_value <= (115 / 100 * m_ranges.first))
+	if (m_value <= ((15 / 100 * (m_ranges.second - m_ranges.first)) + m_ranges.first))
 	{
 		if (m_value < m_ranges.first)
 		{
