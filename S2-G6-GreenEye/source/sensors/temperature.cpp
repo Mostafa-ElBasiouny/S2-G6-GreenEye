@@ -68,7 +68,7 @@ void Temperature::SetRanges(float min, float max)
 
 void Temperature::Evaluate()
 {
-	if (m_value >= ((15 / 100 * (m_ranges.second - m_ranges.first)) - m_ranges.second))
+	if (m_value >= (m_ranges.second - (15 / 100 * (m_ranges.second - m_ranges.first))))
 	{
 		if (m_value > m_ranges.second)
 		{

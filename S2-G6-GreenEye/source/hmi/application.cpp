@@ -790,7 +790,7 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 
 			ImGui::Text(" ");
 			ImGui::SameLine();
-			int count = events[i].timestamp.length();
+			int count = (int)events[i].timestamp.length();
 			events[i].timestamp[--count] = '\0';
 			ImGui::TextUnformatted(events[i].timestamp.data());
 

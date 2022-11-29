@@ -27,8 +27,9 @@ Wrapper::Wrapper(const char* title)
 	const char* glsl_version = "#version 130";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	this->window = glfwCreateWindow(1600, 900, title, NULL, NULL);
+	this->window = glfwCreateWindow(1900, 1200, title, NULL, NULL);
 	if (this->window == NULL)
 		std::exit(1);
 
@@ -42,7 +43,7 @@ Wrapper::Wrapper(const char* title)
 	(void)io;
 	io.IniFilename = "";
 
-	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 16.0f);
+	ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(InterRegularCompressedData, InterRegularCompressedSize, 26.0f);
 	ImGui::StyleColorsLight();
 
 	ImGuiStyle& style = ImGui::GetStyle();
