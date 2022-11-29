@@ -100,6 +100,8 @@ void AC::Switcher()
 	m_status = (m_status == Record::Disabled ? Record::Enabled : Record::Disabled);
 
 	m_database->Set(m_sensor, m_status);
+
+	CreateEvent(Record::Notice, m_status == Record::Enabled ? "AC: Enabled by system." : "AC: Disabled by system.");
 }
 
 void AC::CreateEvent(Record::Levels level, std::string message)

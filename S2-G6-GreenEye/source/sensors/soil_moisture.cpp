@@ -100,6 +100,8 @@ void WaterSprinkler::Switcher()
 	m_status = (m_status == Record::Disabled ? Record::Enabled : Record::Disabled);
 
 	m_database->Set(m_sensor, m_status);
+
+	CreateEvent(Record::Notice, m_status == Record::Enabled ? "Water Sprinkler: Enabled by system." : "Water Sprinkler: Disabled by system.");
 }
 
 void WaterSprinkler::CreateEvent(Record::Levels level, std::string message)

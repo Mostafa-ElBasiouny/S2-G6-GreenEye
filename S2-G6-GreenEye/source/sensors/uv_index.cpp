@@ -100,6 +100,8 @@ void UVLight::Switcher()
 	m_status = (m_status == Record::Disabled ? Record::Enabled : Record::Disabled);
 
 	m_database->Set(m_sensor, m_status);
+
+	CreateEvent(Record::Notice, m_status == Record::Enabled ? "UV Light: Enabled by system." : "UV Light: Disabled by system.");
 }
 
 void UVLight::CreateEvent(Record::Levels level, std::string message)
