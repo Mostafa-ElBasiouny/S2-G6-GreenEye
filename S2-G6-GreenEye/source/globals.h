@@ -5,7 +5,7 @@
 #include "sensors/uv_index.h"
 #include "sensors/temperature.h"
 #include "sensors/air_humidity.h"
-#include "sensors/precipitation.h"
+#include "sensors/air_precipitation.h"
 #include "sensors/soil_moisture.h"
 #include "sensors/soil_fertility.h"
 

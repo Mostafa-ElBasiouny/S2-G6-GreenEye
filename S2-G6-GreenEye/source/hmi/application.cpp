@@ -24,7 +24,7 @@ Application::States::States()
 	std::fill_n(std::back_inserter(this->uv_index), this->record_size, (this->uv_index_range.first + this->uv_index_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->temperature), this->record_size, (this->temperature_range.first + this->temperature_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->air_humidity), this->record_size, (this->air_humidity_range.first + this->air_humidity_range.second) / 2.0f);
-	std::fill_n(std::back_inserter(this->precipitation), this->record_size, (this->precipitation_range.first + this->precipitation_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->air_precipitation), this->record_size, (this->precipitation_range.first + this->precipitation_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->soil_moisture), this->record_size, (this->soil_moisture_range.first + this->soil_moisture_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->soil_fertility), this->record_size, (this->soil_fertility_range.first + this->soil_fertility_range.second) / 2.0f);
 
@@ -67,7 +67,7 @@ void Application::States::SetCO2(std::vector<float> values)
 
 void Application::States::SetPrecipitation(std::vector<float> values)
 {
-	this->precipitation = values;
+	this->air_precipitation = values;
 }
 
 void Application::States::SetSoilFertility(std::vector<float> values)
@@ -115,7 +115,7 @@ std::vector<float> Application::States::GetCO2()
 
 std::vector<float> Application::States::GetPrecipitation()
 {
-	return this->precipitation;
+	return this->air_precipitation;
 }
 
 std::vector<float> Application::States::GetSoilFertility()
@@ -302,7 +302,7 @@ void Application::Base::Home()
 			ImPlot::PlotBars("UV Index", RangedPlot(this->states->GetUVIndex().first, (this->states->uv_index_range.first + this->states->uv_index_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Temperature", RangedPlot(this->states->GetTemperature().first, (this->states->temperature_range.first + this->states->temperature_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Air Humidity", RangedPlot(this->states->GetAirHumidity().first, (this->states->air_humidity_range.first + this->states->air_humidity_range.second) / 2.0f).data(), this->states->record_size);
-			ImPlot::PlotBars("Precipitation", RangedPlot(this->states->GetPrecipitation(), (this->states->precipitation_range.first + this->states->precipitation_range.second) / 2.0f).data(), this->states->record_size);
+			ImPlot::PlotBars("Air Precipitation", RangedPlot(this->states->GetPrecipitation(), (this->states->precipitation_range.first + this->states->precipitation_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Soil Moisture", RangedPlot(this->states->GetSoilMoisture().first, (this->states->soil_moisture_range.first + this->states->soil_moisture_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars("Soil Fertility", RangedPlot(this->states->GetSoilFertility(), (this->states->soil_fertility_range.first + this->states->soil_fertility_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -608,9 +608,9 @@ void Application::Base::AirHumidity()
 	}
 }
 
-void Application::Base::Precipitation()
+void Application::Base::Air_Precipitation()
 {
-	ImGui::Text("Precipitation Panel");
+	ImGui::Text("Air Precipitation Panel");
 
 	float width = ImGui::GetWindowWidth() - 32.0f;
 	float height = ImGui::GetWindowHeight() - 152.0f;
@@ -624,7 +624,7 @@ void Application::Base::Precipitation()
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
 			ImPlot::SetupAxes("Sample", "Millimeter (MM)");
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
-			ImPlot::PlotScatter("Precipitation", this->states->GetPrecipitation().data(), this->states->record_size);
+			ImPlot::PlotScatter("Air Precipitation", this->states->GetPrecipitation().data(), this->states->record_size);
 			ImPlot::PopStyleVar();
 			ImPlot::EndPlot();
 		}
@@ -647,7 +647,7 @@ void Application::Base::Precipitation()
 	{
 		ImGui::BeginChild("Events", ImVec2(width, height / 3), true);
 
-		this->Events(this->states->GetEvents(this->states->Precipitation));
+		this->Events(this->states->GetEvents(this->states->Air_Precipitation));
 
 		ImGui::EndChild();
 	}
@@ -817,7 +817,7 @@ inline void Application::Base::Events(std::vector<Application::States::Event> ev
 				sensor = "Air Humidity";
 				break;
 			case 6:
-				sensor = "Precipitation";
+				sensor = "Air Precipitation";
 				break;
 			case 7:
 				sensor = "Soil Moisture";
@@ -866,7 +866,7 @@ inline void Popup()
 			sensor = "Air Humidity";
 			break;
 		case 6:
-			sensor = "Precipitation";
+			sensor = "Air Precipitation";
 			break;
 		case 7:
 			sensor = "Soil Moisture";
@@ -929,8 +929,8 @@ void Application::Base::Render()
 			ImGui::EndTabItem();
 		}
 
-		if (ImGui::BeginTabItem("Precipitation")) {
-			this->Precipitation();
+		if (ImGui::BeginTabItem("Air Precipitation")) {
+			this->Air_Precipitation();
 			ImGui::EndTabItem();
 		}
 

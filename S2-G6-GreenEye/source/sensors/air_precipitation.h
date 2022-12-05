@@ -2,9 +2,9 @@
 
 #include "../database.h"
 
-class Precipitation
+class Air_Precipitation
 {
-	Record::Sensors m_sensor = Record::Precipitation;
+	Record::Sensors m_sensor = Record::Air_Precipitation;
 	Database* m_database;
 
 	float m_value;
@@ -15,8 +15,8 @@ class Precipitation
 	clock_t m_internal_clock;
 
 public:
-	Precipitation(int read_interval, Database* database);
-	~Precipitation();
+	Air_Precipitation(int read_interval, Database* database);
+	~Air_Precipitation();
 
 	void Run();
 	void GetRanges();

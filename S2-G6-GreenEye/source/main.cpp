@@ -10,7 +10,7 @@ void WinMain()
 	INITIALIZE(Temperature, temperature);
 	INITIALIZE(AirHumidity, air_humidity);
 	INITIALIZE(SoilMoisture, soil_moisture);
-	INITIALIZE(Precipitation, precipitation);
+	INITIALIZE(Air_Precipitation, air_precipitation);
 	INITIALIZE(SoilFertility, soil_fertility);
 
 	while (!application.ShouldClose()) {
@@ -22,7 +22,7 @@ void WinMain()
 		temperature->Run();
 		air_humidity->Run();
 		soil_moisture->Run();
-		precipitation->Run();
+		air_precipitation->Run();
 		soil_fertility->Run();
 
 		// ...
@@ -96,9 +96,9 @@ void WinMain()
 		g_database->Get(Record::AirHumidity, air_humidity);
 		application.states.SetAirHumidity(air_humidity);
 
-		vector<float> precipitation;
-		g_database->Get(Record::Precipitation, precipitation);
-		application.states.SetPrecipitation(precipitation);
+		vector<float> air_precipitation;
+		g_database->Get(Record::Air_Precipitation, air_precipitation);
+		application.states.SetPrecipitation(air_precipitation);
 
 		vector<float> soil_moisture;
 		g_database->Get(Record::SoilMoisture, soil_moisture);
@@ -130,9 +130,9 @@ void WinMain()
 		air_humidity_ranges = application.states.GetAirHumidityRanges();
 		g_database->Set(Record::AirHumidity, air_humidity_ranges.first, air_humidity_ranges.second);
 
-		pair<float, float> precipitation_ranges;
-		precipitation_ranges = application.states.GetPrecipitationRanges();
-		g_database->Set(Record::Precipitation, precipitation_ranges.first, precipitation_ranges.second);
+		pair<float, float> air_precipitation_ranges;
+		air_precipitation_ranges = application.states.GetPrecipitationRanges();
+		g_database->Set(Record::Air_Precipitation, air_precipitation_ranges.first, air_precipitation_ranges.second);
 
 		pair<float, float> soil_moisture_ranges;
 		soil_moisture_ranges = application.states.GetSoilMoistureRanges();
@@ -172,7 +172,7 @@ void WinMain()
 	DELETE(temperature);
 	DELETE(air_humidity);
 	DELETE(soil_moisture);
-	DELETE(precipitation);
+	DELETE(air_precipitation);
 	DELETE(soil_fertility);
 
 	DELETE(g_database);

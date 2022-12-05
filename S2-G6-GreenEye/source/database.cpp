@@ -23,7 +23,7 @@ void Record::Set(Sensors sensor, float value)
 	case UVIndex: VectorAppend(&uv_index, value); break;
 	case Temperature: VectorAppend(&temperature, value); break;
 	case AirHumidity: VectorAppend(&air_humidity, value); break;
-	case Precipitation: VectorAppend(&precipitation, value); break;
+	case Air_Precipitation: VectorAppend(&air_precipitation, value); break;
 	case SoilMoisture: VectorAppend(&soil_moisture, value); break;
 	case SoilFertility: VectorAppend(&soil_fertility, value); break;
 	}
@@ -50,7 +50,7 @@ void Record::Set(Sensors sensor, float minimum_value, float maximum_value)
 	case UVIndex: uv_index_range = make_pair(minimum_value, maximum_value); break;
 	case Temperature: temperature_range = make_pair(minimum_value, maximum_value); break;
 	case AirHumidity: air_humidity_range = make_pair(minimum_value, maximum_value); break;
-	case Precipitation: precipitation_range = make_pair(minimum_value, maximum_value); break;
+	case Air_Precipitation: precipitation_range = make_pair(minimum_value, maximum_value); break;
 	case SoilMoisture: soil_moisture_range = make_pair(minimum_value, maximum_value); break;
 	case SoilFertility: soil_fertility_range = make_pair(minimum_value, maximum_value); break;
 	}
@@ -77,7 +77,7 @@ void Record::Get(Sensors sensor, vector<float>& out_values)
 	case UVIndex: out_values = uv_index; break;
 	case Temperature: out_values = temperature; break;
 	case AirHumidity: out_values = air_humidity; break;
-	case Precipitation: out_values = precipitation; break;
+	case Air_Precipitation: out_values = air_precipitation; break;
 	case SoilMoisture: out_values = soil_moisture; break;
 	case SoilFertility: out_values = soil_fertility; break;
 	}
@@ -104,7 +104,7 @@ void Record::Get(Sensors sensor, float& out_minimum_value, float& out_maximum_va
 	case UVIndex: out_minimum_value = uv_index_range.first; out_maximum_value = uv_index_range.second; break;
 	case Temperature: out_minimum_value = temperature_range.first; out_maximum_value = temperature_range.second; break;
 	case AirHumidity: out_minimum_value = air_humidity_range.first; out_maximum_value = air_humidity_range.second; break;
-	case Precipitation: out_minimum_value = precipitation_range.first; out_maximum_value = precipitation_range.second; break;
+	case Air_Precipitation: out_minimum_value = precipitation_range.first; out_maximum_value = precipitation_range.second; break;
 	case SoilMoisture: out_minimum_value = soil_moisture_range.first; out_maximum_value = soil_moisture_range.second; break;
 	case SoilFertility: out_minimum_value = soil_fertility_range.first; out_maximum_value = soil_fertility_range.second; break;
 	}
@@ -248,17 +248,17 @@ void Database::Read(Sensors sensor)
 			}
 		}
 		break;
-	case Record::Precipitation:
+	case Record::Air_Precipitation:
 		for (const auto& data : m_record_raw_data)
 		{
 			if (data.first == "precipitation_range") {
 				ranges = ToPair(data.second);
-				Set(Record::Precipitation, ranges.first, ranges.second);
+				Set(Record::Air_Precipitation, ranges.first, ranges.second);
 			}
 
-			if (data.first == "precipitation") {
+			if (data.first == "air_precipitation") {
 				values = ToVector(data.second);
-				for (auto& value : values) Set(Record::Precipitation, value);
+				for (auto& value : values) Set(Record::Air_Precipitation, value);
 			}
 		}
 		break;
@@ -375,11 +375,11 @@ void Database::Write(Sensors sensor)
 		m_file_stream << "air_humidity_range=" << minimum_value << "," << maximum_value << "," << "\n";
 		m_file_stream << "air_humidity=";
 		break;
-	case Record::Precipitation:
-		Get(Record::Precipitation, minimum_value, maximum_value);
-		Get(Record::Precipitation, values);
+	case Record::Air_Precipitation:
+		Get(Record::Air_Precipitation, minimum_value, maximum_value);
+		Get(Record::Air_Precipitation, values);
 		m_file_stream << "precipitation_range=" << minimum_value << "," << maximum_value << "," << "\n";
-		m_file_stream << "precipitation=";
+		m_file_stream << "air_precipitation=";
 		break;
 	case Record::SoilMoisture:
 		Get(Record::SoilMoisture, status);
@@ -425,7 +425,7 @@ Database::Database(string file_name)
 	std::fill_n(std::back_inserter(this->uv_index), this->record_size, (this->uv_index_range.first + this->uv_index_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->temperature), this->record_size, (this->temperature_range.first + this->temperature_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->air_humidity), this->record_size, (this->air_humidity_range.first + this->air_humidity_range.second) / 2.0f);
-	std::fill_n(std::back_inserter(this->precipitation), this->record_size, (this->precipitation_range.first + this->precipitation_range.second) / 2.0f);
+	std::fill_n(std::back_inserter(this->air_precipitation), this->record_size, (this->precipitation_range.first + this->precipitation_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->soil_moisture), this->record_size, (this->soil_moisture_range.first + this->soil_moisture_range.second) / 2.0f);
 	std::fill_n(std::back_inserter(this->soil_fertility), this->record_size, (this->soil_fertility_range.first + this->soil_fertility_range.second) / 2.0f);
 
@@ -455,7 +455,7 @@ Database::Database(string file_name)
 	Read(UVIndex);
 	Read(Temperature);
 	Read(AirHumidity);
-	Read(Precipitation);
+	Read(Air_Precipitation);
 	Read(SoilMoisture);
 	Read(SoilFertility);
 
@@ -473,7 +473,7 @@ Database::~Database()
 	Write(UVIndex);
 	Write(Temperature);
 	Write(AirHumidity);
-	Write(Precipitation);
+	Write(Air_Precipitation);
 	Write(SoilMoisture);
 	Write(SoilFertility);
 

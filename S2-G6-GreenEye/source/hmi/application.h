@@ -41,7 +41,7 @@ public:
 			UVIndex,
 			Temperature,
 			AirHumidity,
-			Precipitation,
+			Air_Precipitation,
 			SoilMoisture,
 			SoilFertility
 		};
@@ -61,7 +61,7 @@ public:
 		std::vector<float> uv_index;
 		std::vector<float> temperature;
 		std::vector<float> air_humidity;
-		std::vector<float> precipitation;
+		std::vector<float> air_precipitation;
 		std::vector<float> soil_moisture;
 		std::vector<float> soil_fertility;
 
@@ -135,7 +135,7 @@ public:
 		void UVIndex();
 		void Temperature();
 		void AirHumidity();
-		void Precipitation();
+		void Air_Precipitation();
 		void SoilMoisture();
 		void SoilFertility();
 

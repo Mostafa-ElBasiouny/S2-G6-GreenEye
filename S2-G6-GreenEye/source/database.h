@@ -22,7 +22,7 @@ struct Record
 
 	enum Levels { Notice, Warning, Critical };
 
-	enum Sensors { None, PH, CO2, UVIndex, Temperature, AirHumidity, Precipitation, SoilMoisture, SoilFertility };
+	enum Sensors { None, PH, CO2, UVIndex, Temperature, AirHumidity, Air_Precipitation, SoilMoisture, SoilFertility };
 
 	struct Event { Sensors sensor; Levels level; string message; string timestamp; };
 
@@ -32,7 +32,7 @@ protected:
 	vector<float> uv_index;
 	vector<float> temperature;
 	vector<float> air_humidity;
-	vector<float> precipitation;
+	vector<float> air_precipitation;
 	vector<float> soil_moisture;
 	vector<float> soil_fertility;
 
