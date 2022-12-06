@@ -154,11 +154,11 @@
     <ClInclude Include="source\hmi\backend_wrapper.h" />
     <ClInclude Include="source\hmi\inter_regular.h" />
     <ClInclude Include="source\sensors\air_humidity.h" />
+    <ClInclude Include="source\sensors\air_precipitation.h" />
     <ClInclude Include="source\sensors\co2.h" />
     <ClInclude Include="source\database.h" />
     <ClInclude Include="source\globals.h" />
     <ClInclude Include="source\sensors\ph.h" />
-    <ClInclude Include="source\sensors\precipitation.h" />
     <ClInclude Include="source\sensors\soil_fertility.h" />
     <ClInclude Include="source\sensors\soil_moisture.h" />
     <ClInclude Include="source\sensors\temperature.h" />
@@ -176,11 +176,11 @@
     <ClCompile Include="source\hmi\application.cpp" />
     <ClCompile Include="source\hmi\backend_wrapper.cpp" />
     <ClCompile Include="source\sensors\air_humidity.cpp" />
+    <ClCompile Include="source\sensors\air_precipitation.cpp" />
     <ClCompile Include="source\sensors\co2.cpp" />
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\sensors\ph.cpp" />
-    <ClCompile Include="source\sensors\precipitation.cpp" />
     <ClCompile Include="source\sensors\soil_fertility.cpp" />
     <ClCompile Include="source\sensors\soil_moisture.cpp" />
     <ClCompile Include="source\sensors\temperature.cpp" />
@@ -191,7 +191,7 @@
     <None Include="resources\sensors\CO2.data" />
     <None Include="resources\GreenEye.data" />
     <None Include="resources\sensors\PH.data" />
-    <None Include="resources\sensors\Precipitation.data" />
+    <None Include="resources\sensors\AirPrecipitation.data" />
     <None Include="resources\sensors\SoilFertility.data" />
     <None Include="resources\sensors\SoilMoisture.data" />
     <None Include="resources\sensors\Temperature.data" />

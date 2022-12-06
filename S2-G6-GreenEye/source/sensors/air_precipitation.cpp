@@ -77,21 +77,21 @@ void Air_Precipitation::Evaluate()
 	{
 		if (m_value > m_ranges.second)
 		{
-			CreateEvent(Record::Critical, "Air Precipitation levels too high!");
+			CreateEvent(Record::Critical, "Air precipitation levels too high!");
 			return;
 		}
 
-		CreateEvent(Record::Warning, "Air Precipitation reaching high levels!");
+		CreateEvent(Record::Warning, "Air precipitation reaching high levels!");
 	}
 
 	if (m_value <= ((15 / 100 * (m_ranges.second - m_ranges.first)) + m_ranges.first))
 	{
 		if (m_value < m_ranges.first)
 		{
-			CreateEvent(Record::Critical, "Air Precipitation levels too low!");
+			CreateEvent(Record::Critical, "Air precipitation levels too low!");
 			return;
 		}
 
-		CreateEvent(Record::Warning, "Air Precipitation reaching low levels!");
+		CreateEvent(Record::Warning, "Air precipitation reaching low levels!");
 	}
 }

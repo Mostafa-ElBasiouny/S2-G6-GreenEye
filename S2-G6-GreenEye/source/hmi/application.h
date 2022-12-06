@@ -103,6 +103,7 @@ public:
 		std::pair<std::vector<float>, Status> GetSoilMoisture();
 
 		std::vector<Event> GetEvents(Sensors sensor = None);
+                void ClearEvents();
 
 		std::pair<float, float> GetCO2Ranges();
 		std::pair<float, float> GetPrecipitationRanges();
@@ -138,6 +139,7 @@ public:
 		void Air_Precipitation();
 		void SoilMoisture();
 		void SoilFertility();
+                void Options();
 
 		inline void Events(std::vector<Application::States::Event> events);
 

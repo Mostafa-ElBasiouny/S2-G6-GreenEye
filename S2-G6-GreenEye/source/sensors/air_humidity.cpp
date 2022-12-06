@@ -101,7 +101,7 @@ void Humidifier::Switcher()
 
 	m_database->Set(m_sensor, m_status);
 
-	CreateEvent(Record::Notice, m_status == Record::Enabled ? "Humidifier: Enabled by system." : "Humidifier: Disabled by system.");
+	CreateEvent(Record::Notice, m_status == Record::Enabled ? "Humidifier enabled by system." : "Humidifier disabled by system.");
 }
 
 void Humidifier::CreateEvent(Record::Levels level, std::string message)

@@ -166,6 +166,8 @@ std::vector<Application::States::Event> Application::States::GetEvents(Sensors s
 	}
 }
 
+void Application::States::ClearEvents() { this->events.clear(); }
+
 std::pair<float, float> Application::States::GetCO2Ranges()
 {
 	return this->co2_range;
@@ -295,7 +297,9 @@ void Application::Base::Home()
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
 			ImPlot::SetupLegend(ImPlotLocation_North, ImPlotLegendFlags_Outside | ImPlotLegendFlags_Horizontal);
-			ImPlot::SetupAxes("Sample", "Change Over Time");
+                  ImPlot::SetupAxes("Sample", "Change Over Time",
+                                    ImPlotAxisFlags_NoGridLines,
+                                          ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
 			ImPlot::PlotBars("PH", RangedPlot(this->states->GetPH().first, (this->states->ph_range.first + this->states->ph_range.second) / 2.0f).data(), this->states->record_size);
 			ImPlot::PlotBars(u8"CO²", RangedPlot(this->states->GetCO2(), (this->states->co2_range.first + this->states->co2_range.second) / 2.0f).data(), this->states->record_size);
@@ -360,7 +364,7 @@ void Application::Base::PH()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetPH(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->PH, action == "Enable" ? "PH Regulator: Enabled by user." : "PH Regulator: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->PH, action == "Enable" ? "PH regulator enabled by user." : "PH regulator disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetPH().second);
 			this->m_database->Set(Record::PH, status);
 		}
@@ -391,7 +395,9 @@ void Application::Base::CO2()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", "Parts Per Million (PPM)");
+                  ImPlot::SetupAxes("Sample", "Parts Per Million (PPM)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter(u8"CO²", this->states->GetCO2().data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -461,7 +467,7 @@ void Application::Base::UVIndex()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetUVIndex(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->UVIndex, action == "Enable" ? "UV Light: Enabled by user." : "UV Light: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->UVIndex, action == "Enable" ? "UV light enabled by user." : "UV light disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetUVIndex().second);
 			this->m_database->Set(Record::UVIndex, status);
 		}
@@ -492,7 +498,9 @@ void Application::Base::Temperature()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", u8"Celsius (°C)");
+                  ImPlot::SetupAxes("Sample", u8"Celsius (°C)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Temperature", this->states->GetTemperature().first.data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -526,7 +534,7 @@ void Application::Base::Temperature()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetTemperature(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->Temperature, action == "Enable" ? "AC: Enabled by user." : "AC: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->Temperature, action == "Enable" ? "AC enabled by user." : "AC disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetTemperature().second);
 			this->m_database->Set(Record::Temperature, status);
 		}
@@ -557,7 +565,9 @@ void Application::Base::AirHumidity()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", "Percentage (%)");
+                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Air Humidity", this->states->GetAirHumidity().first.data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -591,7 +601,7 @@ void Application::Base::AirHumidity()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetAirHumidity(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->AirHumidity, action == "Enable" ? "Humidifier: Enabled by user." : "Humidifier: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->AirHumidity, action == "Enable" ? "Humidifier enabled by user." : "Humidifier disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetAirHumidity().second);
 			this->m_database->Set(Record::AirHumidity, status);
 		}
@@ -622,7 +632,9 @@ void Application::Base::Air_Precipitation()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", "Millimeter (MM)");
+                  ImPlot::SetupAxes("Sample", "Millimeter (MM)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Air Precipitation", this->states->GetPrecipitation().data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -667,7 +679,9 @@ void Application::Base::SoilMoisture()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", "Percentage (%)");
+                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Soil Moisture", this->states->GetSoilMoisture().first.data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -701,7 +715,7 @@ void Application::Base::SoilMoisture()
 		if (ImGui::SmallButton(action)) {
 			this->states->SetSoilMoisture(action == "Enable" ? this->states->Enabled : this->states->Disabled);
 			time_t _ = time(0);
-			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->SoilMoisture, action == "Enable" ? "Water Sprinkler: Enabled by user." : "Water Sprinkler: Disabled by user." });
+			this->states->SetEvent({ ctime(&_), this->states->Notice, this->states->SoilMoisture, action == "Enable" ? "Water sprinkler enabled by user." : "Water sprinkler disabled by user." });
 			auto status = static_cast<Record::Status>(this->states->GetSoilMoisture().second);
 			this->m_database->Set(Record::SoilMoisture, status);
 		}
@@ -732,7 +746,9 @@ void Application::Base::SoilFertility()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-			ImPlot::SetupAxes("Sample", "Percentage (%)");
+                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                                    ImPlotAxisFlags_NoGridLines,
+                                    ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
 			ImPlot::PlotScatter("Soil Fertility", this->states->GetSoilFertility().data(), this->states->record_size);
 			ImPlot::PopStyleVar();
@@ -761,6 +777,180 @@ void Application::Base::SoilFertility()
 
 		ImGui::EndChild();
 	}
+}
+
+void Application::Base::Options()
+{
+  ImGui::Text("Options Panel");
+
+  float width = ImGui::GetWindowWidth() - 32.0f;
+  float height = ImGui::GetWindowHeight() - 152.0f;
+
+  {
+    ImGui::BeginChild("Options", ImVec2(width, height), true);
+
+	ImGui::Text("Logs");
+	if (ImGui::Button("Clear Logs")) {
+          this->states->ClearEvents();
+	}
+        ImGui::NewLine();
+	ImGui::Text("Themes");
+	ImGuiStyle *style = &ImGui::GetStyle();
+    style->Colors[ImGuiCol_Button] = ImVec4(0.49f, 0.71f, 0.3f, 1.00f);
+      if (ImGui::Checkbox("Dark Theme", &theme_toggle)) {
+      if (!theme_toggle) {
+        ImGui::StyleColorsLight();
+
+        ImGuiStyle &style = ImGui::GetStyle();
+
+        {
+          style.GrabMinSize = 20.0f;
+          style.ScrollbarSize = 20.0f;
+          style.PopupBorderSize = 1.0f;
+          style.ChildBorderSize = 1.0f;
+          style.WindowBorderSize = 1.0f;
+
+          style.TabRounding = 12.0f;
+          style.GrabRounding = 12.0f;
+          style.FrameRounding = 12.0f;
+          style.ChildRounding = 12.0f;
+          style.FrameRounding = 12.0f;
+          style.PopupRounding = 12.0f;
+          style.ScrollbarRounding = 12.0f;
+
+          style.LogSliderDeadzone = 12.0f;
+
+          style.ItemSpacing = ImVec2(20.0f, 10.0f);
+          style.ItemInnerSpacing = ImVec2(20.0f, 4.0f);
+
+          style.FramePadding = ImVec2(20.0f, 16.0f);
+          style.WindowPadding = ImVec2(16.0f, 16.0f);
+
+          style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
+          style.Colors[ImGuiCol_TextDisabled] =
+              ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
+          style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.00f);
+          style.Colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+          style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.98f);
+          style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.30f);
+          style.Colors[ImGuiCol_BorderShadow] =
+              ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+          style.Colors[ImGuiCol_FrameBg] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+          style.Colors[ImGuiCol_FrameBgHovered] =
+              ImVec4(0.26f, 0.98f, 0.40f, 0.40f);
+          style.Colors[ImGuiCol_FrameBgActive] =
+              ImVec4(0.26f, 0.98f, 0.27f, 0.67f);
+          style.Colors[ImGuiCol_TitleBg] = ImVec4(0.96f, 0.96f, 0.96f, 1.00f);
+          style.Colors[ImGuiCol_TitleBgActive] =
+              ImVec4(0.82f, 0.82f, 0.82f, 1.00f);
+          style.Colors[ImGuiCol_TitleBgCollapsed] =
+              ImVec4(1.00f, 1.00f, 1.00f, 0.51f);
+          style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
+          style.Colors[ImGuiCol_ScrollbarBg] =
+              ImVec4(0.98f, 0.98f, 0.98f, 0.53f);
+          style.Colors[ImGuiCol_ScrollbarGrab] =
+              ImVec4(0.69f, 0.69f, 0.69f, 0.80f);
+          style.Colors[ImGuiCol_ScrollbarGrabHovered] =
+              ImVec4(0.49f, 0.49f, 0.49f, 0.80f);
+          style.Colors[ImGuiCol_ScrollbarGrabActive] =
+              ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
+          style.Colors[ImGuiCol_CheckMark] = ImVec4(0.07f, 0.70f, 0.10f, 1.00f);
+          style.Colors[ImGuiCol_SliderGrab] =
+              ImVec4(0.07f, 0.50f, 0.15f, 0.78f);
+          style.Colors[ImGuiCol_SliderGrabActive] =
+              ImVec4(0.46f, 0.80f, 0.57f, 0.60f);
+          style.Colors[ImGuiCol_Button] = ImVec4(0.49f, 0.71f, 0.3f, 1.00f);
+          style.Colors[ImGuiCol_ButtonHovered] =
+              ImVec4(0.17f, 0.47f, 0.18f, 0.27f);
+          style.Colors[ImGuiCol_ButtonActive] =
+              ImVec4(0.24f, 0.74f, 0.05f, 0.72f);
+          style.Colors[ImGuiCol_Header] = ImVec4(0.10f, 0.72f, 0.36f, 0.31f);
+          style.Colors[ImGuiCol_HeaderHovered] =
+              ImVec4(0.10f, 0.67f, 0.34f, 0.80f);
+          style.Colors[ImGuiCol_HeaderActive] =
+              ImVec4(0.36f, 0.93f, 0.55f, 1.00f);
+          style.Colors[ImGuiCol_Separator] = ImVec4(0.39f, 0.39f, 0.39f, 0.62f);
+          style.Colors[ImGuiCol_SeparatorHovered] =
+              ImVec4(0.10f, 0.65f, 0.18f, 0.78f);
+          style.Colors[ImGuiCol_SeparatorActive] =
+              ImVec4(0.14f, 0.80f, 0.16f, 1.00f);
+          style.Colors[ImGuiCol_ResizeGrip] =
+              ImVec4(0.35f, 0.35f, 0.35f, 0.17f);
+          style.Colors[ImGuiCol_ResizeGripHovered] =
+              ImVec4(0.28f, 0.98f, 0.26f, 0.67f);
+          style.Colors[ImGuiCol_ResizeGripActive] =
+              ImVec4(0.26f, 0.98f, 0.32f, 0.95f);
+          style.Colors[ImGuiCol_Tab] = ImVec4(0.20f, 0.82f, 0.23f, 0.81f);
+          style.Colors[ImGuiCol_TabHovered] =
+              ImVec4(0.26f, 0.98f, 0.26f, 0.80f);
+          style.Colors[ImGuiCol_TabActive] = ImVec4(0.09f, 0.65f, 0.24f, 1.00f);
+          style.Colors[ImGuiCol_TabUnfocused] =
+              ImVec4(0.92f, 0.93f, 0.94f, 0.99f);
+          style.Colors[ImGuiCol_TabUnfocusedActive] =
+              ImVec4(0.74f, 0.91f, 0.77f, 1.00f);
+          style.Colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+          style.Colors[ImGuiCol_PlotLinesHovered] =
+              ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+          style.Colors[ImGuiCol_PlotHistogram] =
+              ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+          style.Colors[ImGuiCol_PlotHistogramHovered] =
+              ImVec4(1.00f, 0.45f, 0.00f, 1.00f);
+          style.Colors[ImGuiCol_TableHeaderBg] =
+              ImVec4(0.78f, 0.98f, 0.82f, 1.00f);
+          style.Colors[ImGuiCol_TableBorderStrong] =
+              ImVec4(0.57f, 0.57f, 0.64f, 1.00f);
+          style.Colors[ImGuiCol_TableBorderLight] =
+              ImVec4(0.68f, 0.68f, 0.74f, 1.00f);
+          style.Colors[ImGuiCol_TableRowBg] =
+              ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+          style.Colors[ImGuiCol_TableRowBgAlt] =
+              ImVec4(0.30f, 0.30f, 0.30f, 0.09f);
+          style.Colors[ImGuiCol_TextSelectedBg] =
+              ImVec4(0.26f, 0.98f, 0.30f, 0.35f);
+          style.Colors[ImGuiCol_DragDropTarget] =
+              ImVec4(0.26f, 0.98f, 0.42f, 0.95f);
+          style.Colors[ImGuiCol_NavHighlight] =
+              ImVec4(0.26f, 0.98f, 0.36f, 0.80f);
+          style.Colors[ImGuiCol_NavWindowingHighlight] =
+              ImVec4(0.70f, 0.70f, 0.70f, 0.70f);
+          style.Colors[ImGuiCol_NavWindowingDimBg] =
+              ImVec4(0.20f, 0.20f, 0.20f, 0.20f);
+          style.Colors[ImGuiCol_ModalWindowDimBg] =
+              ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+        }
+      } else {
+        ImGui::StyleColorsDark();
+
+        ImGuiStyle &style = ImGui::GetStyle();
+
+        {
+          style.GrabMinSize = 20.0f;
+          style.ScrollbarSize = 20.0f;
+          style.PopupBorderSize = 1.0f;
+          style.ChildBorderSize = 1.0f;
+          style.WindowBorderSize = 1.0f;
+
+          style.TabRounding = 12.0f;
+          style.GrabRounding = 12.0f;
+          style.FrameRounding = 12.0f;
+          style.ChildRounding = 12.0f;
+          style.FrameRounding = 12.0f;
+          style.PopupRounding = 12.0f;
+          style.ScrollbarRounding = 12.0f;
+
+          style.LogSliderDeadzone = 12.0f;
+
+          style.ItemSpacing = ImVec2(20.0f, 10.0f);
+          style.ItemInnerSpacing = ImVec2(20.0f, 4.0f);
+
+          style.FramePadding = ImVec2(20.0f, 16.0f);
+          style.WindowPadding = ImVec2(16.0f, 16.0f);
+        }
+      }
+    }
+
+    ImGui::EndChild();
+  }
 }
 
 inline void Application::Base::Events(std::vector<Application::States::Event> events)
@@ -944,130 +1134,12 @@ void Application::Base::Render()
 			ImGui::EndTabItem();
 		}
 
-		ImGui::EndTabBar();
-		ImGui::SameLine();
-
-		ImGuiStyle* style = &ImGui::GetStyle();
-		style->Colors[ImGuiCol_Button] = ImVec4(0.49f, 0.71f, 0.3f, 1.00f);
-		if (ImGui::Button("Toggle Theme"))
-		{
-			if (theme_toggle)
-			{
-				ImGui::StyleColorsLight();
-
-				ImGuiStyle& style = ImGui::GetStyle();
-
-				{
-					style.GrabMinSize = 20.0f;
-					style.ScrollbarSize = 20.0f;
-					style.PopupBorderSize = 1.0f;
-					style.ChildBorderSize = 1.0f;
-					style.WindowBorderSize = 1.0f;
-
-					style.TabRounding = 12.0f;
-					style.GrabRounding = 12.0f;
-					style.FrameRounding = 12.0f;
-					style.ChildRounding = 12.0f;
-					style.FrameRounding = 12.0f;
-					style.PopupRounding = 12.0f;
-					style.ScrollbarRounding = 12.0f;
-
-					style.LogSliderDeadzone = 12.0f;
-
-					style.ItemSpacing = ImVec2(20.0f, 10.0f);
-					style.ItemInnerSpacing = ImVec2(20.0f, 4.0f);
-
-					style.FramePadding = ImVec2(20.0f, 16.0f);
-					style.WindowPadding = ImVec2(16.0f, 16.0f);
-
-					style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
-					style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
-					style.Colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.00f);
-					style.Colors[ImGuiCol_ChildBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-					style.Colors[ImGuiCol_PopupBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.98f);
-					style.Colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.30f);
-					style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-					style.Colors[ImGuiCol_FrameBg] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-					style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.26f, 0.98f, 0.40f, 0.40f);
-					style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.26f, 0.98f, 0.27f, 0.67f);
-					style.Colors[ImGuiCol_TitleBg] = ImVec4(0.96f, 0.96f, 0.96f, 1.00f);
-					style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.82f, 0.82f, 0.82f, 1.00f);
-					style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 1.00f, 1.00f, 0.51f);
-					style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.86f, 0.86f, 0.86f, 1.00f);
-					style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.98f, 0.98f, 0.98f, 0.53f);
-					style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.69f, 0.69f, 0.69f, 0.80f);
-					style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.49f, 0.49f, 0.49f, 0.80f);
-					style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
-					style.Colors[ImGuiCol_CheckMark] = ImVec4(0.07f, 0.70f, 0.10f, 1.00f);
-					style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.07f, 0.50f, 0.15f, 0.78f);
-					style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.46f, 0.80f, 0.57f, 0.60f);
-					style.Colors[ImGuiCol_Button] = ImVec4(0.49f, 0.71f, 0.3f, 1.00f);
-					style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.17f, 0.47f, 0.18f, 0.27f);
-					style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.24f, 0.74f, 0.05f, 0.72f);
-					style.Colors[ImGuiCol_Header] = ImVec4(0.10f, 0.72f, 0.36f, 0.31f);
-					style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.10f, 0.67f, 0.34f, 0.80f);
-					style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.36f, 0.93f, 0.55f, 1.00f);
-					style.Colors[ImGuiCol_Separator] = ImVec4(0.39f, 0.39f, 0.39f, 0.62f);
-					style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.10f, 0.65f, 0.18f, 0.78f);
-					style.Colors[ImGuiCol_SeparatorActive] = ImVec4(0.14f, 0.80f, 0.16f, 1.00f);
-					style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.35f, 0.35f, 0.35f, 0.17f);
-					style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.28f, 0.98f, 0.26f, 0.67f);
-					style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.98f, 0.32f, 0.95f);
-					style.Colors[ImGuiCol_Tab] = ImVec4(0.20f, 0.82f, 0.23f, 0.81f);
-					style.Colors[ImGuiCol_TabHovered] = ImVec4(0.26f, 0.98f, 0.26f, 0.80f);
-					style.Colors[ImGuiCol_TabActive] = ImVec4(0.09f, 0.65f, 0.24f, 1.00f);
-					style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.92f, 0.93f, 0.94f, 0.99f);
-					style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.74f, 0.91f, 0.77f, 1.00f);
-					style.Colors[ImGuiCol_PlotLines] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
-					style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
-					style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
-					style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.45f, 0.00f, 1.00f);
-					style.Colors[ImGuiCol_TableHeaderBg] = ImVec4(0.78f, 0.98f, 0.82f, 1.00f);
-					style.Colors[ImGuiCol_TableBorderStrong] = ImVec4(0.57f, 0.57f, 0.64f, 1.00f);
-					style.Colors[ImGuiCol_TableBorderLight] = ImVec4(0.68f, 0.68f, 0.74f, 1.00f);
-					style.Colors[ImGuiCol_TableRowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-					style.Colors[ImGuiCol_TableRowBgAlt] = ImVec4(0.30f, 0.30f, 0.30f, 0.09f);
-					style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.98f, 0.30f, 0.35f);
-					style.Colors[ImGuiCol_DragDropTarget] = ImVec4(0.26f, 0.98f, 0.42f, 0.95f);
-					style.Colors[ImGuiCol_NavHighlight] = ImVec4(0.26f, 0.98f, 0.36f, 0.80f);
-					style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.70f, 0.70f, 0.70f, 0.70f);
-					style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.20f);
-					style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
-				}
-			}
-			else {
-				ImGui::StyleColorsDark();
-
-				ImGuiStyle& style = ImGui::GetStyle();
-
-				{
-					style.GrabMinSize = 20.0f;
-					style.ScrollbarSize = 20.0f;
-					style.PopupBorderSize = 1.0f;
-					style.ChildBorderSize = 1.0f;
-					style.WindowBorderSize = 1.0f;
-
-					style.TabRounding = 12.0f;
-					style.GrabRounding = 12.0f;
-					style.FrameRounding = 12.0f;
-					style.ChildRounding = 12.0f;
-					style.FrameRounding = 12.0f;
-					style.PopupRounding = 12.0f;
-					style.ScrollbarRounding = 12.0f;
-
-					style.LogSliderDeadzone = 12.0f;
-
-					style.ItemSpacing = ImVec2(20.0f, 10.0f);
-					style.ItemInnerSpacing = ImVec2(20.0f, 4.0f);
-
-					style.FramePadding = ImVec2(20.0f, 16.0f);
-					style.WindowPadding = ImVec2(16.0f, 16.0f);
-				}
-			}
-
-			theme_toggle = !theme_toggle;
+		if (ImGui::BeginTabItem("Options")) {
+                  this->Options();
+			ImGui::EndTabItem();
 		}
 
+		ImGui::EndTabBar();
 		ImGui::End();
 
 		if (!this->states->alerts.empty() && !alert_visible)
