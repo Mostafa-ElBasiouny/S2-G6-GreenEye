@@ -395,7 +395,7 @@ void Application::Base::CO2()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", "Parts Per Million (PPM)",
+                  ImPlot::SetupAxes("Time", "Parts Per Million (PPM)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
@@ -498,7 +498,7 @@ void Application::Base::Temperature()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", u8"Celsius (°C)",
+                  ImPlot::SetupAxes("Time", u8"Celsius (°C)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
@@ -565,7 +565,7 @@ void Application::Base::AirHumidity()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                  ImPlot::SetupAxes("Time", "Percentage (%)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
@@ -632,7 +632,7 @@ void Application::Base::Air_Precipitation()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", "Millimeter (MM)",
+                  ImPlot::SetupAxes("Time", "Millimeter (MM)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
@@ -679,7 +679,7 @@ void Application::Base::SoilMoisture()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                  ImPlot::SetupAxes("Time", "Percentage (%)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
@@ -746,7 +746,7 @@ void Application::Base::SoilFertility()
 		static ImPlotFlags flags = ImPlotFlags_NoTitle | ImPlotFlags_NoLegend | ImPlotFlags_NoMouseText | ImPlotFlags_NoInputs | ImPlotFlags_NoMenus | ImPlotFlags_NoBoxSelect | ImPlotFlags_NoChild;
 
 		if (ImPlot::BeginPlot("Plots", plot_size, flags)) {
-                  ImPlot::SetupAxes("Sample", "Percentage (%)",
+                  ImPlot::SetupAxes("Time", "Percentage (%)",
                                     ImPlotAxisFlags_NoGridLines,
                                     ImPlotAxisFlags_NoGridLines);
 			ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.5f);
