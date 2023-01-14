@@ -13,3 +13,6 @@ With `Green Eye 🌱` connected to the greenhouse *sensors*, *controls*, and *HM
 - Precipitation
 - Soil Moisture
 - Soil Fertility
+
+# User Interface
+![image](https://user-images.githubusercontent.com/91155192/212488438-000903b3-fe43-46ad-8467-f0c4204a693b.png)
